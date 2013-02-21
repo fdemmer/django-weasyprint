@@ -1,5 +1,5 @@
 from django.template.response import TemplateResponse
-from django.views.generic import TemplateView
+from django.views.generic.base import TemplateResponseMixin, TemplateView
 
 import weasyprint
 
@@ -22,7 +22,7 @@ class PDFTemplateResponse(TemplateResponse):
         return pdf
 
 
-class PDFTemplateView(TemplateView):
+class PDFTemplateResponseMixin(TemplateResponseMixin):
     response_class = PDFTemplateResponse
     filename = None
 
@@ -37,4 +37,8 @@ class PDFTemplateView(TemplateView):
         Returns a response, giving the filename parameter to PDFTemplateResponse.
         """
         kwargs['filename'] = self.get_filename()
-        return super(PDFTemplateView, self).render_to_response(*args, **kwargs)
+        return super(PDFTemplateResponseMixin, self).render_to_response(*args, **kwargs)
+
+
+class PDFTemplateView(TemplateView, PDFTemplateResponseMixin):
+    pass
