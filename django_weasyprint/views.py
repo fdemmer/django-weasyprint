@@ -24,6 +24,7 @@ class PDFTemplateResponse(TemplateResponse):
             base_url = settings.WEASYPRINT_BASEURL
         else:
             base_url = self._request.build_absolute_uri("/")
+        print "weasyprint stylesheet : ", self._stylesheets
         pdf = weasyprint.HTML(string=html, base_url=base_url).write_pdf(stylesheets=self._stylesheets)
         return pdf
 
