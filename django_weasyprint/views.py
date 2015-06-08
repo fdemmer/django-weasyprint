@@ -24,6 +24,17 @@ class PDFTemplateResponse(TemplateResponse):
             base_url = settings.WEASYPRINT_BASEURL
         else:
             base_url = self._request.build_absolute_uri("/")
+        if self._stylesheets:
+            for index, value in enumerate(self._stylesheets):
+                """
+                Generate CSS objects.
+                If an element is a string of css weasyprint.CSS will raise and 
+                """
+                try:
+                    self._stylesheets[index] = weasyprint.CSS(value)
+                except IOError:
+                    self._stylesheets[index] = weasyprint.CSS(string=value)
+                    pass
         pdf = weasyprint.HTML(string=html, base_url=base_url).write_pdf(stylesheets=self._stylesheets)
         return pdf
 
