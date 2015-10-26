@@ -11,8 +11,6 @@ class PDFTemplateResponse(TemplateResponse):
         super(PDFTemplateResponse, self).__init__(*args, **kwargs)
         if filename:
             self['Content-Disposition'] = 'attachment; filename="%s"' % filename
-        else:
-            self['Content-Disposition'] = 'attachment'
 
     @property
     def rendered_content(self):
