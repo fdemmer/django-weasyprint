@@ -1,1 +1,1 @@
-from .views import PDFTemplateResponseMixin, PDFTemplateView
+from .views import PDFTemplateResponseMixin, PDFTemplateView, PDFTemplateResponse
