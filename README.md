@@ -17,6 +17,12 @@ Use `PDFTemplateView` as class based view base class or the just the mixin
 ## Example
 
 ```python
+from django.conf import settings
+from django.views.generic import DetailView
+
+from django_weasyprint import PDFTemplateResponseMixin
+
+
 class MyModelView(DetailView):
     model = MyModel
     template_name = 'mymodel.html'
