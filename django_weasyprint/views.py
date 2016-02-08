@@ -14,31 +14,37 @@ class PDFTemplateResponse(TemplateResponse):
         if filename:
             self['Content-Disposition'] = 'attachment; filename="%s"' % filename
 
+    def get_base_url(self):
+        return getattr(
+            settings, 'WEASYPRINT_BASEURL',
+            self._request.build_absolute_uri('/')
+        )
+
+    def get_css(self, base_url):
+        tmp = []
+        for value in self._stylesheets:
+            try:
+                css = weasyprint.CSS(value, base_url=base_url)
+            except IOError:
+                css = weasyprint.CSS(string=value, base_url=base_url)
+            if css:
+                tmp.append(css)
+        return tmp
+
     @property
     def rendered_content(self):
         """Returns the rendered pdf"""
         html = super(PDFTemplateResponse, self).rendered_content
-        if hasattr(settings, 'WEASYPRINT_BASEURL'):
-            base_url = settings.WEASYPRINT_BASEURL
-        else:
-            base_url = self._request.build_absolute_uri("/")
+        base_url = self.get_base_url()
 
-        if self._stylesheets:
-            for index, value in enumerate(self._stylesheets):
-                try:
-                    self._stylesheets[index] = weasyprint.CSS(value, base_url=base_url)
-                except IOError:
-                    self._stylesheets[index] = weasyprint.CSS(string=value, base_url=base_url)
-                    pass
+        weasy_html = weasyprint.HTML(string=html, base_url=base_url)
+        weasy_css = self.get_css(base_url)
 
         if self._target:
-            weasyprint.HTML(string=html, base_url=base_url).write_pdf(stylesheets=self._stylesheets, target=self.target)
+            weasy_html.write_pdf(stylesheets=weasy_css, target=self._target)
             return None
-        else:
-            pdf = weasyprint.HTML(string=html, base_url=base_url).write_pdf(stylesheets=self._stylesheets)
-            return pdf
 
-        return pdf
+        return weasy_html.write_pdf(stylesheets=weasy_css)
 
 
 class PDFTemplateResponseMixin(TemplateResponseMixin):
