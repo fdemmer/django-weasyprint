@@ -6,14 +6,13 @@ import weasyprint
 
 
 class PDFTemplateResponse(TemplateResponse):
-    def __init__(self, filename=None, target=None, stylesheets=[], *args, **kwargs):
+    def __init__(self, filename=None, target=None, stylesheets=None, *args, **kwargs):
         kwargs['content_type'] = "application/pdf"
         super(PDFTemplateResponse, self).__init__(*args, **kwargs)
-        target = None
+        self._target = target
+        self._stylesheets = stylesheets or []
         if filename:
             self['Content-Disposition'] = 'attachment; filename="%s"' % filename
-        if stylesheets:
-            self._stylesheets = stylesheets
 
     @property
     def rendered_content(self):
@@ -26,17 +25,13 @@ class PDFTemplateResponse(TemplateResponse):
 
         if self._stylesheets:
             for index, value in enumerate(self._stylesheets):
-                """
-                Generate CSS objects.
-                If an element is a string of css weasyprint.CSS will raise and 
-                """
                 try:
                     self._stylesheets[index] = weasyprint.CSS(value, base_url=base_url)
                 except IOError:
                     self._stylesheets[index] = weasyprint.CSS(string=value, base_url=base_url)
                     pass
 
-        if self.target:
+        if self._target:
             weasyprint.HTML(string=html, base_url=base_url).write_pdf(stylesheets=self._stylesheets, target=self.target)
             return None
         else:
