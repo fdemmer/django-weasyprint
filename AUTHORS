@@ -1,0 +1,11 @@
+django-weasyprint was originally created by Jeroen Dekkers in 2013.
+A few forks were merged, code refactored and this file added by Florian Demmer
+in 2015.
+
+Authors according to git log:
+
+    Florian Demmer <fdemmer@gmail.com>
+    Jeroen Dekkers <jeroen@dekkers.ch>
+    Thomas Desveaux <desveaux.thomas@gmail.com>
+    Tim Bell <tim@oodar.com.au>
+    unknown <nicola@.penta.lan>
