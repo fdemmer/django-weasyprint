@@ -71,14 +71,16 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         """
         return self.stylesheets
 
-    def render_to_response(self, *args, **kwargs):
+    def render_to_response(self, context, **response_kwargs):
         """
         Returns a response, giving the filename parameter to PDFTemplateResponse.
         """
-        kwargs['filename'] = self.get_filename()
-        kwargs['stylesheets'] = self.get_stylesheets()
-        kwargs['target'] = self.get_target()
-        return super(PDFTemplateResponseMixin, self).render_to_response(*args, **kwargs)
+        response_kwargs['filename'] = self.get_filename()
+        response_kwargs['stylesheets'] = self.get_stylesheets()
+        response_kwargs['target'] = self.get_target()
+        return super(PDFTemplateResponseMixin, self).render_to_response(
+            context, **response_kwargs
+        )
 
 
 class PDFTemplateView(TemplateView, PDFTemplateResponseMixin):
