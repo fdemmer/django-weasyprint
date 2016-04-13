@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.conf import settings
 from django.template.response import TemplateResponse
 from django.views.generic.base import TemplateResponseMixin, TemplateView
 
 import weasyprint
+
+
+CONTENT_TYPE_PNG = 'image/png'
+CONTENT_TYPE_PDF = 'application/pdf'
 
 
 class PDFTemplateResponse(TemplateResponse):
@@ -60,11 +66,14 @@ class PDFTemplateResponse(TemplateResponse):
         Returns rendered PDF pages.
         """
         document = self.get_document()
+        if CONTENT_TYPE_PNG in self.content_type:
+            return document.write_png()
         return document.write_pdf()
 
 
 class PDFTemplateResponseMixin(TemplateResponseMixin):
     response_class = PDFTemplateResponse
+    content_type = CONTENT_TYPE_PDF
     pdf_filename = None
     pdf_stylesheets = []
 
