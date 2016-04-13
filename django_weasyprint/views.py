@@ -12,7 +12,7 @@ class PDFTemplateResponse(TemplateResponse):
         super(PDFTemplateResponse, self).__init__(*args, **kwargs)
         self._stylesheets = stylesheets or []
         if filename:
-            self['Content-Disposition'] = 'attachment; filename="%s"' % filename
+            self['Content-Disposition'] = 'attachment; %s' % filename
 
     def get_base_url(self):
         """
