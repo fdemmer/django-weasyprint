@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.template.response import TemplateResponse
 from django.views.generic.base import TemplateResponseMixin, TemplateView
@@ -15,6 +16,12 @@ class PDFTemplateResponse(TemplateResponse):
             self['Content-Disposition'] = 'attachment; filename="%s"' % filename
 
     def get_base_url(self):
+        """
+        Determine base URL to fetch CSS files from `WEASYPRINT_BASEURL` or
+        fall back to using the root path of the URL used in the request.
+
+        :return:
+        """
         return getattr(
             settings, 'WEASYPRINT_BASEURL',
             self._request.build_absolute_uri('/')
@@ -67,13 +74,19 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
 
     def get_stylesheets(self):
         """
-        Returns the filename of the stylesheet to use when rendering.
+        Returns a list of stylesheet filenames to use when rendering.
+
+        :rtype: :func:`list`
         """
         return self.stylesheets
 
     def render_to_response(self, context, **response_kwargs):
         """
-        Returns a response, giving the filename parameter to PDFTemplateResponse.
+        Renders PDF document and prepares response by calling on
+        :attr:`response_class` (default: :class:`PDFTemplateResponse`).
+
+        :returns: Django HTTP response
+        :rtype: :class:`django.http.HttpResponse`
         """
         response_kwargs['filename'] = self.get_filename()
         response_kwargs['stylesheets'] = self.get_stylesheets()
@@ -84,4 +97,12 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
 
 
 class PDFTemplateView(TemplateView, PDFTemplateResponseMixin):
+    """
+    Concrete view for serving PDF files.
+
+    .. code-block:: python
+
+        class HelloPDFView(PDFTemplateView):
+            template_name = "hello.html"
+    """
     pass
