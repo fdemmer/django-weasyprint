@@ -12,7 +12,7 @@ CONTENT_TYPE_PNG = 'image/png'
 CONTENT_TYPE_PDF = 'application/pdf'
 
 
-class PDFTemplateResponse(TemplateResponse):
+class WeasyTemplateResponse(TemplateResponse):
 
     def __init__(self, filename=None, stylesheets=None, *args, **kwargs):
         """
@@ -21,7 +21,7 @@ class PDFTemplateResponse(TemplateResponse):
         :param stylesheets:
         """
         self._stylesheets = stylesheets or []
-        super(PDFTemplateResponse, self).__init__(*args, **kwargs)
+        super(WeasyTemplateResponse, self).__init__(*args, **kwargs)
         if filename:
             self['Content-Disposition'] = 'attachment; %s' % filename
 
@@ -40,6 +40,7 @@ class PDFTemplateResponse(TemplateResponse):
     def get_css(self, base_url):
         tmp = []
         for value in self._stylesheets:
+            #TODO test with missing or invalid css
             css = weasyprint.CSS(value, base_url=base_url)
             if css:
                 tmp.append(css)
@@ -55,7 +56,7 @@ class PDFTemplateResponse(TemplateResponse):
         PDF file.
         """
         base_url = self.get_base_url()
-        content = super(PDFTemplateResponse, self).rendered_content
+        content = super(WeasyTemplateResponse, self).rendered_content
 
         html = weasyprint.HTML(string=content, base_url=base_url)
         return html.render(self.get_css(base_url))
@@ -71,8 +72,8 @@ class PDFTemplateResponse(TemplateResponse):
         return document.write_pdf()
 
 
-class PDFTemplateResponseMixin(TemplateResponseMixin):
-    response_class = PDFTemplateResponse
+class WeasyTemplateResponseMixin(TemplateResponseMixin):
+    response_class = WeasyTemplateResponse
     content_type = CONTENT_TYPE_PDF
     pdf_filename = None
     pdf_stylesheets = []
@@ -99,7 +100,7 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
     def render_to_response(self, context, **response_kwargs):
         """
         Renders PDF document and prepares response by calling on
-        :attr:`response_class` (default: :class:`PDFTemplateResponse`).
+        :attr:`response_class` (default: :class:`WeasyTemplateResponse`).
 
         :returns: Django HTTP response
         :rtype: :class:`django.http.HttpResponse`
@@ -108,18 +109,18 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
             'filename': self.get_pdf_filename(),
             'stylesheets': self.get_pdf_stylesheets(),
         })
-        return super(PDFTemplateResponseMixin, self).render_to_response(
+        return super(WeasyTemplateResponseMixin, self).render_to_response(
             context, **response_kwargs
         )
 
 
-class PDFTemplateView(TemplateView, PDFTemplateResponseMixin):
+class WeasyTemplateView(TemplateView, WeasyTemplateResponseMixin):
     """
     Concrete view for serving PDF files.
 
     .. code-block:: python
 
-        class HelloPDFView(PDFTemplateView):
+        class HelloPDFView(WeasyTemplateView):
             template_name = "hello.html"
     """
     pass

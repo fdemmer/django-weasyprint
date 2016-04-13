@@ -1,1 +1,1 @@
-from .views import PDFTemplateResponseMixin, PDFTemplateView, PDFTemplateResponse
+from .views import WeasyTemplateResponseMixin, WeasyTemplateView, WeasyTemplateResponse
