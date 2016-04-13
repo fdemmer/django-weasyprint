@@ -9,6 +9,10 @@ I combined all the forks lying around.
 Then I found out weasyprint does not support 'rem' units. :(
 So I stopped working on it.
 
+Then I added 'rem' support. :D
+And worked a little more on the mixins.
+
+
 ## Usage
 
 Use `PDFTemplateView` as class based view base class or the just the mixin 

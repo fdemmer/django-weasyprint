@@ -1,6 +1,5 @@
 django-weasyprint was originally created by Jeroen Dekkers in 2013.
-A few forks were merged, code refactored and this file added by Florian Demmer
-in 2015.
+Further changes were made and several forks merged by Florian Demmer from 2015.
 
 Authors according to git log:
 
@@ -9,3 +8,6 @@ Authors according to git log:
     Thomas Desveaux <desveaux.thomas@gmail.com>
     Tim Bell <tim@oodar.com.au>
     unknown <nicola@.penta.lan>
+
+Some credits for API design and actual source for documentation go to
+Filip Wasilewski and other authors and contributors of django-easy-pdf.
