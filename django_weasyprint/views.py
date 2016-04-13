@@ -7,10 +7,19 @@ import weasyprint
 
 
 class PDFTemplateResponse(TemplateResponse):
-    def __init__(self, filename=None, target=None, stylesheets=None, *args, **kwargs):
-        kwargs['content_type'] = "application/pdf"
-        super(PDFTemplateResponse, self).__init__(*args, **kwargs)
+    content_type = 'application/pdf'
+
+    def __init__(self, filename=None, stylesheets=None, *args, **kwargs):
+        """
+
+        :param filename:
+        :param stylesheets:
+        """
         self._stylesheets = stylesheets or []
+        kwargs.update({
+            'content_type': self.content_type,
+        })
+        super(PDFTemplateResponse, self).__init__(*args, **kwargs)
         if filename:
             self['Content-Disposition'] = 'attachment; %s' % filename
 
