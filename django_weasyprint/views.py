@@ -34,17 +34,28 @@ class PDFTemplateResponse(TemplateResponse):
                 tmp.append(css)
         return tmp
 
+    def get_document(self):
+        """
+        Returns a :class:`~document.Document` object which provides
+        access to individual pages and various meta-data.
+
+        See :meth:`weasyprint.HTML.render` and
+        :meth:`weasyprint.document.Document.write_pdf` on how to generate a
+        PDF file.
+        """
+        base_url = self.get_base_url()
+        content = super(PDFTemplateResponse, self).rendered_content
+
+        html = weasyprint.HTML(string=content, base_url=base_url)
+        return html.render(self.get_css(base_url))
+
     @property
     def rendered_content(self):
-        """Returns the rendered pdf"""
-        html = super(PDFTemplateResponse, self).rendered_content
-        base_url = self.get_base_url()
-
-        weasy_html = weasyprint.HTML(string=html, base_url=base_url)
-        weasy_css = self.get_css(base_url)
-
-
-        return weasy_html.write_pdf(stylesheets=weasy_css)
+        """
+        Returns rendered PDF pages.
+        """
+        document = self.get_document()
+        return document.write_pdf()
 
 
 class PDFTemplateResponseMixin(TemplateResponseMixin):
