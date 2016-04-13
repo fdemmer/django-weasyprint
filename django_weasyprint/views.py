@@ -10,7 +10,6 @@ class PDFTemplateResponse(TemplateResponse):
     def __init__(self, filename=None, target=None, stylesheets=None, *args, **kwargs):
         kwargs['content_type'] = "application/pdf"
         super(PDFTemplateResponse, self).__init__(*args, **kwargs)
-        self._target = target
         self._stylesheets = stylesheets or []
         if filename:
             self['Content-Disposition'] = 'attachment; filename="%s"' % filename
@@ -47,9 +46,6 @@ class PDFTemplateResponse(TemplateResponse):
         weasy_html = weasyprint.HTML(string=html, base_url=base_url)
         weasy_css = self.get_css(base_url)
 
-        if self._target:
-            weasy_html.write_pdf(stylesheets=weasy_css, target=self._target)
-            return None
 
         return weasy_html.write_pdf(stylesheets=weasy_css)
 
@@ -57,7 +53,6 @@ class PDFTemplateResponse(TemplateResponse):
 class PDFTemplateResponseMixin(TemplateResponseMixin):
     response_class = PDFTemplateResponse
     filename = None
-    target = None
     stylesheets = []
 
     def get_filename(self):
@@ -66,11 +61,7 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         """
         return self.filename
 
-    def get_target(self):
         """
-        Returns the target for the rendered PDF.
-        """
-        return self.target
 
     def get_stylesheets(self):
         """
@@ -90,7 +81,6 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         """
         response_kwargs['filename'] = self.get_filename()
         response_kwargs['stylesheets'] = self.get_stylesheets()
-        response_kwargs['target'] = self.get_target()
         return super(PDFTemplateResponseMixin, self).render_to_response(
             context, **response_kwargs
         )
