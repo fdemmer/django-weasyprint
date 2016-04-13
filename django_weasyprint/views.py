@@ -7,7 +7,6 @@ import weasyprint
 
 
 class PDFTemplateResponse(TemplateResponse):
-    content_type = 'application/pdf'
 
     def __init__(self, filename=None, stylesheets=None, *args, **kwargs):
         """
@@ -16,9 +15,6 @@ class PDFTemplateResponse(TemplateResponse):
         :param stylesheets:
         """
         self._stylesheets = stylesheets or []
-        kwargs.update({
-            'content_type': self.content_type,
-        })
         super(PDFTemplateResponse, self).__init__(*args, **kwargs)
         if filename:
             self['Content-Disposition'] = 'attachment; %s' % filename
