@@ -29,10 +29,7 @@ class PDFTemplateResponse(TemplateResponse):
     def get_css(self, base_url):
         tmp = []
         for value in self._stylesheets:
-            try:
-                css = weasyprint.CSS(value, base_url=base_url)
-            except IOError:
-                css = weasyprint.CSS(string=value, base_url=base_url)
+            css = weasyprint.CSS(value, base_url=base_url)
             if css:
                 tmp.append(css)
         return tmp
