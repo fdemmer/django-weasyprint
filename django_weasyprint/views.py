@@ -52,24 +52,27 @@ class PDFTemplateResponse(TemplateResponse):
 
 class PDFTemplateResponseMixin(TemplateResponseMixin):
     response_class = PDFTemplateResponse
-    filename = None
-    stylesheets = []
+    pdf_filename = None
+    pdf_stylesheets = []
 
-    def get_filename(self):
+    def get_pdf_filename(self):
         """
-        Returns the filename of the rendered PDF.
-        """
-        return self.filename
+        Returns :attr:`pdf_filename` value by default.
 
-        """
+        If left blank the browser will display the PDF inline.
+        Otherwise it will pop up the "Save as.." dialog.
 
-    def get_stylesheets(self):
+        :rtype: :func:`str`
+        """
+        return self.pdf_filename
+
+    def get_pdf_stylesheets(self):
         """
         Returns a list of stylesheet filenames to use when rendering.
 
         :rtype: :func:`list`
         """
-        return self.stylesheets
+        return self.pdf_stylesheets
 
     def render_to_response(self, context, **response_kwargs):
         """
@@ -79,8 +82,10 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         :returns: Django HTTP response
         :rtype: :class:`django.http.HttpResponse`
         """
-        response_kwargs['filename'] = self.get_filename()
-        response_kwargs['stylesheets'] = self.get_stylesheets()
+        response_kwargs.update({
+            'filename': self.get_pdf_filename(),
+            'stylesheets': self.get_pdf_stylesheets(),
+        })
         return super(PDFTemplateResponseMixin, self).render_to_response(
             context, **response_kwargs
         )
