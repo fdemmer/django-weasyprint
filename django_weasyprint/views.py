@@ -21,6 +21,7 @@ class WeasyTemplateResponse(TemplateResponse):
         :param stylesheets:
         """
         self._stylesheets = stylesheets or []
+        self._content_type = kwargs.get('content_type')
         super(WeasyTemplateResponse, self).__init__(*args, **kwargs)
         if filename:
             self['Content-Disposition'] = 'attachment; %s' % filename
@@ -67,7 +68,7 @@ class WeasyTemplateResponse(TemplateResponse):
         Returns rendered PDF pages.
         """
         document = self.get_document()
-        if CONTENT_TYPE_PNG in self.content_type:
+        if CONTENT_TYPE_PNG in self._content_type:
             return document.write_png()
         return document.write_pdf()
 
