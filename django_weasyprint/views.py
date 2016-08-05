@@ -32,12 +32,11 @@ class WeasyTemplateResponse(TemplateResponse):
 
             - `settings.WEASYPRINT_BASEURL`
             - `settings.STATIC_URL`
-            - `settings.MEDIA_URL`
             - root path of the URL used in the request.
 
         :return:
         """
-        for attr in ['WEASYPRINT_BASEURL', 'STATIC_URL', 'MEDIA_URL']:
+        for attr in ['WEASYPRINT_BASEURL', 'STATIC_URL']:
             try:
                 return getattr(settings, attr)
             except AttributeError:
