@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.template.response import TemplateResponse
-from django.views.generic.base import TemplateResponseMixin, TemplateView
+from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
 
 import weasyprint
 
@@ -115,7 +115,7 @@ class WeasyTemplateResponseMixin(TemplateResponseMixin):
         )
 
 
-class WeasyTemplateView(TemplateView, WeasyTemplateResponseMixin):
+class WeasyTemplateView(WeasyTemplateResponseMixin, ContextMixin, View):
     """
     Concrete view for serving PDF files.
 
@@ -124,4 +124,7 @@ class WeasyTemplateView(TemplateView, WeasyTemplateResponseMixin):
         class HelloPDFView(WeasyTemplateView):
             template_name = "hello.html"
     """
-    pass
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
