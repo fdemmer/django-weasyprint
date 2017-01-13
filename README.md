@@ -1,17 +1,6 @@
 # django-weasyprint
 
-A class-based view that generated pdfs using WeasyPrint
-
-## About this fork
-
-I combined all the forks lying around.
-
-Then I found out weasyprint does not support 'rem' units. :(
-So I stopped working on it.
-
-Then I added 'rem' support. :D
-And worked a little more on the mixins.
-
+A class-based view that generated PDFs using WeasyPrint
 
 ## Usage
 
@@ -37,3 +26,7 @@ class MyModelViewPrintView(PDFTemplateResponseMixin, MyModelView):
         settings.STATIC_ROOT + "css/app.css",
     ]
 ```
+## History
+
+2016-02-08: forked to merge open pull requests
+2017-01-13: official repository taken over from https://github.com/dekkers/
