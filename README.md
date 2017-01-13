@@ -29,4 +29,5 @@ class MyModelViewPrintView(PDFTemplateResponseMixin, MyModelView):
 ## History
 
 2016-02-08: forked to merge open pull requests
+
 2017-01-13: official repository taken over from https://github.com/dekkers/
