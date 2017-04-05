@@ -4,8 +4,8 @@ A class-based view that generated PDFs using WeasyPrint
 
 ## Usage
 
-Use `PDFTemplateView` as class based view base class or the just the mixin 
-`PDFTemplateResponseMixin` on a `TemplateView` (or subclass thereof).
+Use `WeasyTemplateView` as class based view base class or the just the mixin 
+`WeasyTemplateResponseMixin` on a `TemplateView` (or subclass thereof).
 
 ## Example
 
@@ -13,7 +13,7 @@ Use `PDFTemplateView` as class based view base class or the just the mixin
 from django.conf import settings
 from django.views.generic import DetailView
 
-from django_weasyprint import PDFTemplateResponseMixin
+from django_weasyprint import WeasyTemplateResponseMixin
 
 
 class MyModelView(DetailView):
@@ -21,7 +21,7 @@ class MyModelView(DetailView):
     template_name = 'mymodel.html'
 
 
-class MyModelViewPrintView(PDFTemplateResponseMixin, MyModelView):
+class MyModelViewPrintView(WeasyTemplateResponseMixin, MyModelView):
     stylesheets = [
         settings.STATIC_ROOT + "css/app.css",
     ]
