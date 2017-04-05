@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='django-weasyprint',
-    version='0.1',
+    version='0.2',
     description='Django weasyprint app',
     url='https://github.com/fdemmer/django-weasyprint',
     author='Florian Demmer',
@@ -18,7 +18,7 @@ setup(
         'django_weasyprint': [],
     },
     install_requires=[
-        "django >= 1.4",
+        "Django >= 1.4",
         "WeasyPrint",
     ],
 )
