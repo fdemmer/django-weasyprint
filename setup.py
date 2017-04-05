@@ -15,9 +15,7 @@ setup(
     ],
     packages=['django_weasyprint'],
     package_data={
-        'django_weasyprint': [
-            'locale/*/LC_MESSAGES/*'
-        ],
+        'django_weasyprint': [],
     },
     install_requires=[
         "django >= 1.4",
