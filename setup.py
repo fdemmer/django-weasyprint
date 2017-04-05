@@ -4,8 +4,10 @@ setup(
     name='django-weasyprint',
     version='0.1',
     description='Django weasyprint app',
-    author='Jeroen Dekkers',
-    author_email='jeroen@dekkes.ch',
+    url='https://github.com/fdemmer/django-weasyprint',
+    author='Florian Demmer',
+    author_email='fdemmer@gmail.com',
+    license='Apache-2.0',
     classifiers=[
         "Framework :: Django",
         "License :: OSI Approved :: Apache Software License",
