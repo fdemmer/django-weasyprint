@@ -14,17 +14,22 @@ CONTENT_TYPE_PDF = 'application/pdf'
 
 class WeasyTemplateResponse(TemplateResponse):
 
-    def __init__(self, filename=None, stylesheets=None, *args, **kwargs):
+    def __init__(self, filename=None, stylesheets=None, attachment=True,
+                 *args, **kwargs):
         """
 
         :param filename:
         :param stylesheets:
+        :param attachment:
         """
         self._stylesheets = stylesheets or []
         self._content_type = kwargs.get('content_type')
         super(WeasyTemplateResponse, self).__init__(*args, **kwargs)
         if filename:
-            self['Content-Disposition'] = 'attachment; %s' % filename
+            self['Content-Disposition'] = '{}filename="{}"'.format(
+                'attachment;' if attachment else '',
+                filename,
+            )
 
     def get_base_url(self):
         """
@@ -82,6 +87,7 @@ class WeasyTemplateResponseMixin(TemplateResponseMixin):
     response_class = WeasyTemplateResponse
     content_type = CONTENT_TYPE_PDF
     pdf_filename = None
+    pdf_attachment = True
     pdf_stylesheets = []
 
     def get_pdf_filename(self):
@@ -112,6 +118,7 @@ class WeasyTemplateResponseMixin(TemplateResponseMixin):
         :rtype: :class:`django.http.HttpResponse`
         """
         response_kwargs.update({
+            'attachment': self.pdf_attachment,
             'filename': self.get_pdf_filename(),
             'stylesheets': self.get_pdf_stylesheets(),
         })
