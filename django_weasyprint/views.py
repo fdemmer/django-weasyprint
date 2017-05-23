@@ -27,7 +27,7 @@ class WeasyTemplateResponse(TemplateResponse):
         super(WeasyTemplateResponse, self).__init__(*args, **kwargs)
         if filename:
             self['Content-Disposition'] = '{}filename="{}"'.format(
-                'attachment;' if attachment else '',
+                'attachment;' if attachment else 'inline;',
                 filename,
             )
 
