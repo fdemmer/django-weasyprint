@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import weasyprint
 from django.conf import settings
 from django.template.response import TemplateResponse
-from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
-
-import weasyprint
-
+from django.views.generic.base import ContextMixin, TemplateResponseMixin, View
 
 CONTENT_TYPE_PNG = 'image/png'
 CONTENT_TYPE_PDF = 'application/pdf'
 
 
 class WeasyTemplateResponse(TemplateResponse):
-
     def __init__(self, filename=None, stylesheets=None, attachment=True,
                  *args, **kwargs):
         """
@@ -49,18 +46,20 @@ class WeasyTemplateResponse(TemplateResponse):
         return self._request.build_absolute_uri('/')
 
     def get_url_fetcher(self):
-        """Determine the URL fetcher to fetch CSS, images, fonts, etc. from.
+        """
+        Determine the URL fetcher to fetch CSS, images, fonts, etc. from.
 
         This just returns the default URL fetcher from Weasyprint, and is meant
         to be overridden in subclasses.
         """
         return weasyprint.default_url_fetcher
-    
+
     def get_css(self, base_url, url_fetcher):
         tmp = []
         for value in self._stylesheets:
             #TODO test with missing or invalid css
-            css = weasyprint.CSS(value, base_url=base_url, url_fetcher=url_fetcher)
+            css = weasyprint.CSS(value, base_url=base_url,
+                                 url_fetcher=url_fetcher)
             if css:
                 tmp.append(css)
         return tmp
@@ -76,9 +75,12 @@ class WeasyTemplateResponse(TemplateResponse):
         """
         base_url = self.get_base_url()
         url_fetcher = self.get_url_fetcher()
-        content = super(WeasyTemplateResponse, self).rendered_content
 
-        html = weasyprint.HTML(string=content, base_url=base_url, url_fetcher=url_fetcher)
+        html = weasyprint.HTML(
+            string=super(WeasyTemplateResponse, self).rendered_content,
+            base_url=base_url,
+            url_fetcher=url_fetcher,
+        )
         return html.render(self.get_css(base_url, url_fetcher))
 
     @property
