@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='django-weasyprint',
-    version='0.3',
+    version='0.4',
     description='Django weasyprint app',
     url='https://github.com/fdemmer/django-weasyprint',
     author='Florian Demmer',
