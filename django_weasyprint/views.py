@@ -48,11 +48,19 @@ class WeasyTemplateResponse(TemplateResponse):
                 pass
         return self._request.build_absolute_uri('/')
 
-    def get_css(self, base_url):
+    def get_url_fetcher(self):
+        """Determine the URL fetcher to fetch CSS, images, fonts, etc. from.
+
+        This just returns the default URL fetcher from Weasyprint, and is meant
+        to be overridden in subclasses.
+        """
+        return weasyprint.default_url_fetcher
+    
+    def get_css(self, base_url, url_fetcher):
         tmp = []
         for value in self._stylesheets:
             #TODO test with missing or invalid css
-            css = weasyprint.CSS(value, base_url=base_url)
+            css = weasyprint.CSS(value, base_url=base_url, url_fetcher=url_fetcher)
             if css:
                 tmp.append(css)
         return tmp
@@ -67,10 +75,11 @@ class WeasyTemplateResponse(TemplateResponse):
         PDF file.
         """
         base_url = self.get_base_url()
+        url_fetcher = self.get_url_fetcher()
         content = super(WeasyTemplateResponse, self).rendered_content
 
-        html = weasyprint.HTML(string=content, base_url=base_url)
-        return html.render(self.get_css(base_url))
+        html = weasyprint.HTML(string=content, base_url=base_url, url_fetcher=url_fetcher)
+        return html.render(self.get_css(base_url, url_fetcher))
 
     @property
     def rendered_content(self):
