@@ -1,12 +1,26 @@
+import codecs
+import os
+
 from setuptools import find_packages, setup
 
-readme = open('README.rst').read()
+VERSION = '0.4.0'
+
+
+def read(*parts):
+    """
+    Build an absolute path from *parts* and and return the contents of the
+    resulting file. Assume UTF-8 encoding.
+    """
+    pwd = os.path.abspath(os.path.dirname(__file__))
+    with codecs.open(os.path.join(pwd, *parts), 'rb', 'utf-8') as f:
+        return f.read()
+
 
 setup(
     name='django-weasyprint',
-    version='0.4',
-    long_description=readme,
+    version=VERSION,
     description='Django WeasyPrint CBV',
+    long_description=read('README.rst'),
     url='https://github.com/fdemmer/django-weasyprint',
     download_url='https://github.com/fdemmer/django-weasyprint/archive/v{0}.tar.gz'.format(VERSION),
     author='Florian Demmer',
