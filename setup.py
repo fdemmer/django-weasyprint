@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 readme = open('README.rst').read()
 
@@ -16,10 +16,7 @@ setup(
         "License :: OSI Approved :: Apache Software License",
         'Programming Language :: Python',
     ],
-    packages=['django_weasyprint'],
-    package_data={
-        'django_weasyprint': [],
-    },
+    packages=find_packages(),
     install_requires=[
         "Django>=1.8",
         "WeasyPrint",
