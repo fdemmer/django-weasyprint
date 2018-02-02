@@ -1,9 +1,12 @@
 from setuptools import setup
 
+readme = open('README.rst').read()
+
 setup(
     name='django-weasyprint',
     version='0.4',
     description='Django weasyprint app',
+    long_description=readme,
     url='https://github.com/fdemmer/django-weasyprint',
     author='Florian Demmer',
     author_email='fdemmer@gmail.com',
