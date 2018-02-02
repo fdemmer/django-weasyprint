@@ -1,7 +1,7 @@
 django-weasyprint
 =================
 
-A class-based view that generated PDFs using WeasyPrint
+A Django class-based view generating PDF resposes using WeasyPrint.
 
 Usage
 -----
