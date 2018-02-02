@@ -34,7 +34,8 @@ Example
 History
 -------
 
+2017-02-02: finally pushed new release to pypi
+
 2016-02-08: forked to merge open pull requests
 
-2017-01-13: official repository taken over from
-https://github.com/dekkers/
+2016-01-13: official repository taken over from https://github.com/dekkers/
