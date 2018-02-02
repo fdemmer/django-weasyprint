@@ -21,7 +21,7 @@ setup(
         'django_weasyprint': [],
     },
     install_requires=[
-        "Django >= 1.4",
+        "Django>=1.8",
         "WeasyPrint",
     ],
 )
