@@ -5,8 +5,8 @@ readme = open('README.rst').read()
 setup(
     name='django-weasyprint',
     version='0.4',
-    description='Django weasyprint app',
     long_description=readme,
+    description='Django WeasyPrint CBV',
     url='https://github.com/fdemmer/django-weasyprint',
     download_url='https://github.com/fdemmer/django-weasyprint/archive/v{0}.tar.gz'.format(VERSION),
     author='Florian Demmer',
