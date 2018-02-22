@@ -6,6 +6,8 @@ from django.conf import settings
 from django.template.response import TemplateResponse
 from django.views.generic.base import ContextMixin, TemplateResponseMixin, View
 
+from django_weasyprint.utils import django_url_fetcher
+
 CONTENT_TYPE_PNG = 'image/png'
 CONTENT_TYPE_PDF = 'application/pdf'
 
@@ -48,11 +50,8 @@ class WeasyTemplateResponse(TemplateResponse):
     def get_url_fetcher(self):
         """
         Determine the URL fetcher to fetch CSS, images, fonts, etc. from.
-
-        This just returns the default URL fetcher from Weasyprint, and is meant
-        to be overridden in subclasses.
         """
-        return weasyprint.default_url_fetcher
+        return django_url_fetcher
 
     def get_css(self, base_url, url_fetcher):
         tmp = []
