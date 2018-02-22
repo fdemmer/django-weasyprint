@@ -32,20 +32,13 @@ class WeasyTemplateResponse(TemplateResponse):
 
     def get_base_url(self):
         """
-        Determine base URL to fetch CSS files from. First one defined is used:
-
-            - `settings.WEASYPRINT_BASEURL`
-            - `settings.STATIC_URL`
-            - root path of the URL used in the request.
-
-        :return:
+        Determine base URL to fetch CSS files from `WEASYPRINT_BASEURL` or
+        fall back to using the root path of the URL used in the request.
         """
-        for attr in ['WEASYPRINT_BASEURL', 'STATIC_URL']:
-            try:
-                return getattr(settings, attr)
-            except AttributeError:
-                pass
-        return self._request.build_absolute_uri('/')
+        return getattr(
+            settings, 'WEASYPRINT_BASEURL',
+            self._request.build_absolute_uri('/')
+        )
 
     def get_url_fetcher(self):
         """
@@ -146,7 +139,6 @@ class WeasyTemplateView(WeasyTemplateResponseMixin, ContextMixin, View):
         class HelloPDFView(WeasyTemplateView):
             template_name = "hello.html"
     """
-
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
