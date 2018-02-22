@@ -27,7 +27,7 @@ Example
 
 
     class MyModelViewPrintView(WeasyTemplateResponseMixin, MyModelView):
-        stylesheets = [
+        pdf_stylesheets = [
             settings.STATIC_ROOT + "css/app.css",
         ]
 
