@@ -14,15 +14,19 @@ CONTENT_TYPE_PDF = 'application/pdf'
 
 class WeasyTemplateResponse(TemplateResponse):
     def __init__(self, filename=None, stylesheets=None, attachment=True,
-                 *args, **kwargs):
+                 content_type=None, *args, **kwargs):
         """
+        An HTTP response class with PDF or PNG document as content.
 
-        :param filename:
-        :param stylesheets:
-        :param attachment:
+        :param filename: set `Content-Disposition` to use this filename
+        :param attachment: set `Content-Disposition` 'attachment', a `filename`
+            must be given if `True` (default: `True`)
+        :param content_type: optional, by default 'application/pdf' is used,
+            set to 'image/png' to create an PNG image instead
+        :param stylesheets: list of additional stylesheets
         """
         self._stylesheets = stylesheets or []
-        self._content_type = kwargs.get('content_type')
+        self._content_type = content_type
         super(WeasyTemplateResponse, self).__init__(*args, **kwargs)
         if filename:
             self['Content-Disposition'] = '{}filename="{}"'.format(
