@@ -2,7 +2,10 @@
 from __future__ import unicode_literals
 
 import mimetypes
-from urllib import parse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+     from urlparse import urlparse
 
 from django.conf import settings
 from django.contrib.staticfiles.finders import find
