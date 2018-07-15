@@ -19,7 +19,7 @@ def django_url_fetcher(url):
     # load file:// paths directly from disk
     if url.startswith('file:'):
         mime_type, encoding = mimetypes.guess_type(url)
-        url_path = parse.urlparse(url).path
+        url_path = urlparse(url).path
         data = {
             'mime_type': mime_type,
             'encoding': encoding,
