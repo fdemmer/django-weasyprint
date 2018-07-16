@@ -3,7 +3,7 @@ import os
 
 from setuptools import find_packages, setup
 
-VERSION = '0.5.3'
+VERSION = '0.5.4'
 
 
 def read(*parts):
