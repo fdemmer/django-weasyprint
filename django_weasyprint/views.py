@@ -55,7 +55,9 @@ class WeasyTemplateResponse(TemplateResponse):
         for value in self._stylesheets:
             #TODO test with missing or invalid css
             css = weasyprint.CSS(value, base_url=base_url,
-                                 url_fetcher=url_fetcher)
+                                 url_fetcher=url_fetcher,
+                                 font_config=weasyprint.fonts
+                                 .FontConfiguration())
             if css:
                 tmp.append(css)
         return tmp
