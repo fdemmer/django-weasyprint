@@ -27,7 +27,8 @@ Example
     from django.conf import settings
     from django.views.generic import DetailView
 
-    from django_weasyprint import CONTENT_TYPE_PNG, WeasyTemplateResponseMixin
+    from django_weasyprint import WeasyTemplateResponseMixin
+    from django_weasyprint.views import CONTENT_TYPE_PNG
 
 
     class MyModelView(DetailView):
