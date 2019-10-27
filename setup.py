@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 import codecs
 import os
 
 from setuptools import find_packages, setup
 
 VERSION = '0.5.5'
+github_url = 'https://github.com/fdemmer/django-weasyprint'
 
 
 def read(*parts):
@@ -21,8 +23,8 @@ setup(
     version=VERSION,
     description='Django WeasyPrint CBV',
     long_description=read('README.rst'),
-    url='https://github.com/fdemmer/django-weasyprint',
-    download_url='https://github.com/fdemmer/django-weasyprint/archive/v{0}.tar.gz'.format(VERSION),
+    url=github_url,
+    download_url=github_url + '/archive/v{0}.tar.gz'.format(VERSION),
     author='Florian Demmer',
     author_email='fdemmer@gmail.com',
     license='Apache-2.0',
@@ -40,7 +42,11 @@ setup(
     ],
     packages=find_packages(),
     install_requires=[
-        "Django>=1.8",
-        "WeasyPrint",
+        'Django==1.11;python_version<="2.7"',
+        'cairocffi==0.9.0;python_version<="2.7"',
+        'tinycss2==0.6.1;python_version<="2.7"',
+        'WeasyPrint==0.42.3;python_version<="2.7"',
+        'Django>=2.2;python_version>="3.6"',
+        'WeasyPrint>=43;python_version>="3.6"',
     ],
 )
