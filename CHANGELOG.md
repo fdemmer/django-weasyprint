@@ -69,3 +69,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1] - 2017-01-13
 
 - Initial release by Jeroen Dekkers
+
+- Some credits for API design and actual source for documentation go to
+  Filip Wasilewski and other authors and contributors of django-easy-pdf.
