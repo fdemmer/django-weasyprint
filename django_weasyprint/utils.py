@@ -15,7 +15,7 @@ from os.path import basename
 import weasyprint
 
 
-def django_url_fetcher(url, timeout=10, ssl_context=None):
+def django_url_fetcher(url, *args, **kwargs):
     # load file:// paths directly from disk
     if url.startswith('file:'):
         mime_type, encoding = mimetypes.guess_type(url)
@@ -26,15 +26,15 @@ def django_url_fetcher(url, timeout=10, ssl_context=None):
             'filename': basename(url_path),
         }
 
-        if url_path.startswith(settings.MEDIA_URL):
+        if settings.MEDIA_URL and url_path.startswith(settings.MEDIA_URL):
             path = url_path.replace(settings.MEDIA_URL, settings.MEDIA_ROOT)
             data['file_obj'] = default_storage.open(path)
             return data
 
-        elif url_path.startswith(settings.STATIC_URL):
+        elif settings.STATIC_URL and url_path.startswith(settings.STATIC_URL):
             path = url_path.replace(settings.STATIC_URL, '')
             data['file_obj'] = open(find(path), 'rb')
             return data
 
     # fall back to weasyprint default fetcher
-    return weasyprint.default_url_fetcher(url, timeout, ssl_context)
+    return weasyprint.default_url_fetcher(url, *args, **kwargs)
