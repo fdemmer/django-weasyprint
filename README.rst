@@ -67,12 +67,18 @@ Example
     class MyModelImageView(WeasyTemplateResponseMixin, MyModelView):
         # generate a PNG image instead
         content_type = CONTENT_TYPE_PNG
-        
+
         # dynamically generate filename
         def get_pdf_filename(self):
             return 'foo-{at}.pdf'.format(
                 at=timezone.now().strftime('%Y%m%d-%H%M'),
             )
+
+
+Changelog
+---------
+
+See ``CHANGELOG.md``
 
 
 Links
