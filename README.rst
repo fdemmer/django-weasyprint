@@ -13,6 +13,10 @@ Install and update using `pip`_:
 
     pip install -U django-weasyprint
 
+`WeasyPrint`_ is automatically installed as a dependency of this package.
+If you run into any problems be sure to check their `install instructions
+<https://weasyprint.readthedocs.io/en/latest/install.html>`_ for help!
+
 
 Usage
 -----
