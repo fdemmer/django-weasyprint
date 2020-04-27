@@ -7,7 +7,7 @@ clean:
 	rm -rf build dist
 
 build:
-	python setup.py sdist bdist_wheel --universal
+	python setup.py sdist bdist_wheel
 
 publish-test: clean build
 	twine upload -r testpypi --sign dist/*
