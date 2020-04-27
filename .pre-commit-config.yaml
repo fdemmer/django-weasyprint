@@ -6,6 +6,7 @@ repos:
   - id: check-merge-conflict
   - id: debug-statements
   - id: end-of-file-fixer
+    exclude: 'setup.cfg'
   - id: fix-encoding-pragma
   - id: mixed-line-ending
   - id: trailing-whitespace
