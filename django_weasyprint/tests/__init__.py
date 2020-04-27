@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-import os
+from pathlib import Path
 
 import django
 from django.conf import settings
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic import TemplateView
 
 from django_weasyprint import WeasyTemplateResponseMixin, WeasyTemplateView, views
@@ -30,9 +27,9 @@ class PNGView(WeasyTemplateView):
 
 
 urlpatterns = [
-    url(r'^html/$', BaseView.as_view()),
-    url(r'^pdf/$', PDFView.as_view()),
-    url(r'^png/$', PNGView.as_view()),
+    path('html/', BaseView.as_view()),
+    path('pdf/', PDFView.as_view()),
+    path('png/', PNGView.as_view()),
 ]
 
 
@@ -42,7 +39,7 @@ settings.configure(
     MIDDLEWARE=[],
     TEMPLATES=[{
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(os.path.dirname(__file__), 'templates')],
+        'DIRS': [Path(__file__).parent / 'templates'],
     }],
     DATABASES={'default': {
         'ENGINE': 'django.db.backends.sqlite3',

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import weasyprint
 from django.conf import settings
 from django.template.response import TemplateResponse
@@ -27,12 +24,10 @@ class WeasyTemplateResponse(TemplateResponse):
         """
         self._stylesheets = stylesheets or []
         self._content_type = kwargs.get('content_type')
-        super(WeasyTemplateResponse, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if filename:
-            self['Content-Disposition'] = '{}filename="{}"'.format(
-                'attachment;' if attachment else 'inline;',
-                filename,
-            )
+            display = 'attachment' if attachment else 'inline'
+            self['Content-Disposition'] = f'{display};filename="{filename}"'
 
     def get_base_url(self):
         """
@@ -82,7 +77,7 @@ class WeasyTemplateResponse(TemplateResponse):
         font_config = self.get_font_config()
 
         html = weasyprint.HTML(
-            string=super(WeasyTemplateResponse, self).rendered_content,
+            string=super().rendered_content,
             base_url=base_url,
             url_fetcher=url_fetcher,
         )
@@ -141,7 +136,7 @@ class WeasyTemplateResponseMixin(TemplateResponseMixin):
             'filename': self.get_pdf_filename(),
             'stylesheets': self.get_pdf_stylesheets(),
         })
-        return super(WeasyTemplateResponseMixin, self).render_to_response(
+        return super().render_to_response(
             context, **response_kwargs
         )
 

@@ -1,18 +1,11 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import mimetypes
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
+from pathlib import Path
+from urllib.parse import urlparse
 
+import weasyprint
 from django.conf import settings
 from django.contrib.staticfiles.finders import find
 from django.core.files.storage import default_storage
-from os.path import basename
-
-import weasyprint
 
 
 def django_url_fetcher(url, *args, **kwargs):
@@ -23,7 +16,7 @@ def django_url_fetcher(url, *args, **kwargs):
         data = {
             'mime_type': mime_type,
             'encoding': encoding,
-            'filename': basename(url_path),
+            'filename': Path(url_path).name,
         }
 
         if settings.MEDIA_URL and url_path.startswith(settings.MEDIA_URL):

@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-import mock
+from unittest import mock
 from django.test import SimpleTestCase, override_settings
 
 import django_weasyprint.tests  # noqa
