@@ -1,5 +1,8 @@
 all: _list
 
+test:
+	tox
+
 clean:
 	rm -rf build dist
 
