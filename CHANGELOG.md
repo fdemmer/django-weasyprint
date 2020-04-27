@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Drop Python 2 support: WeasyPrint >= 43 and Django >= 2.2 are required
+
+## [0.6.0] - 2020-04-27
+
 - Update README to demonstrate override of URL fetcher (65ced6f)
 - Fix URL fetcher when used with emtpy MEDIA_URL (fd3fb30, #34)
 - Add tests for views and django_url_fetcher & tox configuration
