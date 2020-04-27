@@ -4,7 +4,7 @@ import os
 
 from setuptools import find_packages, setup
 
-VERSION = '0.5.5'
+VERSION = '0.6.0'
 github_url = 'https://github.com/fdemmer/django-weasyprint'
 
 
