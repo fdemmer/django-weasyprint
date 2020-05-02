@@ -82,7 +82,7 @@ Example
 Changelog
 ---------
 
-See ``CHANGELOG.md``
+See `CHANGELOG.md`_
 
 
 Links
@@ -97,4 +97,4 @@ Links
 .. _Django: https://www.djangoproject.com
 .. _WeasyPrint: http://weasyprint.org
 
-.. _URL fetcher: https://weasyprint.readthedocs.io/en/stable/tutorial.html#url-fetchers
+.. _CHANGELOG.md: https://github.com/fdemmer/django-weasyprint/blob/master/CHANGELOG.md
