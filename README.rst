@@ -3,6 +3,17 @@ django-weasyprint
 
 A `Django`_ class-based view generating PDF responses using `WeasyPrint`_.
 
+|PyPI version shields.io| |PyPI pyversions| |PyPI license|
+
+.. |PyPI version shields.io| image:: https://img.shields.io/pypi/v/django-weasyprint.svg
+   :target: https://pypi.python.org/pypi/django-weasyprint/
+
+.. |PyPI pyversions| image:: https://img.shields.io/pypi/pyversions/django-weasyprint.svg
+   :target: https://pypi.python.org/pypi/django-weasyprint/
+
+.. |PyPI license| image:: https://img.shields.io/pypi/l/django-weasyprint.svg
+   :target: https://pypi.python.org/pypi/django-weasyprint/
+
 
 Installing
 ----------
