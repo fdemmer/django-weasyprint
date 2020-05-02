@@ -1,7 +1,7 @@
 all: _list
 
 test:
-	tox
+	tox -p auto
 
 clean:
 	rm -rf build dist
@@ -20,8 +20,6 @@ publish: clean build
 		echo Aborting upload: working directory is dirty >&2; \
 	fi;
 
-
-.PHONY: clean build publish-test publish
 
 # list all targets (https://stackoverflow.com/a/26339924/652457)
 .PHONY: _list
