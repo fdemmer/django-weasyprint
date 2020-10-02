@@ -1,4 +1,4 @@
-django-weasyprint
+django-weasyprint (PDF)
 =================
 
 A `Django`_ class-based view generating PDF responses using `WeasyPrint`_.
