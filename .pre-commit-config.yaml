@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v2.5.0
+  rev: v3.2.0
   hooks:
   - id: check-builtin-literals
   - id: check-merge-conflict
@@ -12,14 +12,31 @@ repos:
   - id: mixed-line-ending
   - id: trailing-whitespace
     args: ['--markdown-linebreak-ext=md']
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 3.8.4
+  hooks:
   - id: flake8
+    additional_dependencies:
+    - flake8-bandit
+    - flake8-bugbear
+    - flake8-builtins
+    - flake8-comprehensions
     args: [
       '--select=C90,E,F,W,W504',
       '--ignore=E127,E128,E131,E265,F403,F405,W503',
       '--max-line-length=90',
     ]
+    exclude: migrations
+- repo: https://github.com/asottile/seed-isort-config
+  rev: v2.2.0
+  hooks:
+  - id: seed-isort-config
+- repo: https://github.com/timothycrosley/isort
+  rev: 5.5.4
+  hooks:
+  - id: isort
 - repo: https://github.com/asottile/pyupgrade
-  rev: v2.1.0
+  rev: v2.7.2
   hooks:
   - id: pyupgrade
     args: ['--py36-plus']
