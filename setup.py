@@ -2,7 +2,7 @@ from pathlib import Path
 
 from setuptools import find_packages, setup
 
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 github_url = 'https://github.com/fdemmer/django-weasyprint'
 
 
