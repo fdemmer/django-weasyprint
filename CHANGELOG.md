@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.0] - 2020-04-27
 
 - Update README to demonstrate override of URL fetcher (65ced6f)
-- Fix URL fetcher when used with emtpy MEDIA_URL (fd3fb30, #34)
+- Fix URL fetcher when used with empty MEDIA_URL (fd3fb30, #34)
 - Add tests for views and django_url_fetcher & tox configuration
 
 ## [0.5.5] - 2019-12-20
