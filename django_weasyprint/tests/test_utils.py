@@ -1,3 +1,4 @@
+from pathlib import Path
 from unittest import mock
 from django.test import SimpleTestCase, override_settings
 
@@ -26,6 +27,23 @@ class URLFetcherTest(SimpleTestCase):
     @override_settings(MEDIA_URL='/media/', MEDIA_ROOT='/media')
     @mock.patch('django_weasyprint.utils.default_storage')
     def test_media(self, mock_storage):
+        # request matches MEDIA_URL, request handled
+        url = 'file:///media/image.jpg'
+        with mock.patch('weasyprint.default_url_fetcher') as url_fetcher:
+            data = django_url_fetcher(url)
+        url_fetcher.assert_not_called()
+
+        self.assertEqual(
+            sorted(data.keys()),
+            ['encoding', 'file_obj', 'filename', 'mime_type'],
+        )
+        self.assertEqual(data['filename'], 'image.jpg')
+        self.assertEqual(data['mime_type'], 'image/jpeg')
+        self.assertEqual(data['encoding'], None)
+
+    @override_settings(MEDIA_URL='/media/', MEDIA_ROOT=Path("/media"))
+    @mock.patch('django_weasyprint.utils.default_storage')
+    def test_media_root_pathlib(self, mock_storage):
         # request matches MEDIA_URL, request handled
         url = 'file:///media/image.jpg'
         with mock.patch('weasyprint.default_url_fetcher') as url_fetcher:
