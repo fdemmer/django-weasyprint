@@ -93,6 +93,54 @@ Example
             )
 
 
+Self-Signed SSL For Server Side Requests
+---------
+
+.. code-block:: sh
+
+    # if you have not yet created a certificate
+    sudo openssl req -x509 \
+        -sha256 \
+        -nodes \
+        -newkey rsa:4096 \
+        -days 365 \
+        -keyout localhost.key \
+        -out localhost.crt
+
+    # follow the prompts about your certificate and the domain name
+
+    openssl x509 -text -noout -in localhost.crt
+
+Add your certificate to nginx.conf
+
+.. code-block:: sh
+
+    # include in your nginx.conf
+    ssl_certificate /etc/ssl/certs/localhost.crt;
+    ssl_certificate_key /etc/ssl/private/localhost.key;
+
+Copy, and update your trusted certificates
+
+.. code-block:: sh
+
+    # copy new certificates
+
+    sudo cp /etc/ssl/certs/localhost.crt /usr/local/share/ca-certificates/localhost.crt
+    sudo cp /etc/ssl/private/localhost.key /usr/local/share/ca-certificates/localhost.key
+
+    # update the certificate authority trusted certificates
+    sudo update-ca-certificates
+
+    # export your newly updated Certificate Authority Bundle file
+    # if using django, it will use the newly signed certificate authority as valid
+    # images will load properly
+    sudo tee -a /etc/environment <<< 'export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt'
+
+    # reboot optional
+    reboot
+
+
+
 Changelog
 ---------
 
