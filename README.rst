@@ -51,7 +51,7 @@ Example
     from django.views.generic import DetailView
 
     from django_weasyprint import WeasyTemplateResponseMixin
-    from django_weasyprint.views import CONTENT_TYPE_PNG
+    from django_weasyprint.views import CONTENT_TYPE_PNG, WeasyTemplateResponse
 
 
     class MyModelView(DetailView):
