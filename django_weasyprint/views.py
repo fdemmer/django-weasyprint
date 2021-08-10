@@ -49,7 +49,7 @@ class WeasyTemplateResponse(TemplateResponse):
         """
         A FreeType font configuration to handle @font-config rules.
         """
-        return weasyprint.fonts.FontConfiguration()
+        return weasyprint.text.fonts.FontConfiguration()
 
     def get_css(self, base_url, url_fetcher):
         tmp = []
