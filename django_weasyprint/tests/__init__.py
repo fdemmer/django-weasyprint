@@ -6,7 +6,7 @@ from django.core.management.utils import get_random_secret_key
 from django.urls import path
 from django.views.generic import TemplateView
 
-from django_weasyprint import WeasyTemplateResponseMixin, WeasyTemplateView, views
+from django_weasyprint import WeasyTemplateResponseMixin, WeasyTemplateView
 
 
 class BaseView(TemplateView):
@@ -14,23 +14,19 @@ class BaseView(TemplateView):
     template_name = 'example.html'
 
 
-class PDFView(WeasyTemplateResponseMixin, BaseView):
-    # just add mixin and set content-type
-    content_type = views.CONTENT_TYPE_PDF
+class PDFDownloadView(WeasyTemplateResponseMixin, BaseView):
     # set filename for download
     pdf_filename = 'le-foo.pdf'
 
 
-class PNGView(WeasyTemplateView):
-    # png view from scratch
+class PDFView(WeasyTemplateView):
     template_name = 'example.html'
-    content_type = views.CONTENT_TYPE_PNG
 
 
 urlpatterns = [
     path('html/', BaseView.as_view()),
     path('pdf/', PDFView.as_view()),
-    path('png/', PNGView.as_view()),
+    path('pdf/download/', PDFDownloadView.as_view()),
 ]
 
 

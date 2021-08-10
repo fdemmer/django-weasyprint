@@ -51,12 +51,11 @@ Example
     from django.views.generic import DetailView
 
     from django_weasyprint import WeasyTemplateResponseMixin
-    from django_weasyprint.views import CONTENT_TYPE_PNG, WeasyTemplateResponse
+    from django_weasyprint.views import WeasyTemplateResponse
 
 
-    class MyModelView(DetailView):
+    class MyDetailView(DetailView):
         # vanilla Django DetailView
-        model = MyModel
         template_name = 'mymodel.html'
 
     class CustomWeasyTemplateResponse(WeasyTemplateResponse):
@@ -68,8 +67,8 @@ Example
             context.verify_mode = ssl.CERT_NONE
             return functools.partial(django_url_fetcher, ssl_context=context)
 
-    class MyModelPrintView(WeasyTemplateResponseMixin, MyModelView):
-        # output of MyModelView rendered as PDF with hardcoded CSS
+    class PrintView(WeasyTemplateResponseMixin, MyDetailView):
+        # output of MyDetailView rendered as PDF with hardcoded CSS
         pdf_stylesheets = [
             settings.STATIC_ROOT + 'css/app.css',
         ]
@@ -78,14 +77,11 @@ Example
         # custom response class to configure url-fetcher
         response_class = CustomWeasyTemplateResponse
 
-    class MyModelDownloadView(WeasyTemplateResponseMixin, MyModelView):
+    class DownloadView(WeasyTemplateResponseMixin, MyDetailView):
         # suggested filename (is required for attachment/download!)
         pdf_filename = 'foo.pdf'
 
-    class MyModelImageView(WeasyTemplateResponseMixin, MyModelView):
-        # generate a PNG image instead
-        content_type = CONTENT_TYPE_PNG
-
+    class DynamicNameView(WeasyTemplateResponseMixin, MyDetailView):
         # dynamically generate filename
         def get_pdf_filename(self):
             return 'foo-{at}.pdf'.format(

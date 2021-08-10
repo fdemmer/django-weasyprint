@@ -5,9 +5,6 @@ from django.views.generic.base import ContextMixin, TemplateResponseMixin, View
 
 from django_weasyprint.utils import django_url_fetcher
 
-CONTENT_TYPE_PNG = 'image/png'
-CONTENT_TYPE_PDF = 'application/pdf'
-
 
 class WeasyTemplateResponse(TemplateResponse):
     def __init__(self, filename=None, stylesheets=None, attachment=True,
@@ -18,12 +15,9 @@ class WeasyTemplateResponse(TemplateResponse):
         :param filename: set `Content-Disposition` to use this filename
         :param attachment: set `Content-Disposition` 'attachment', a `filename`
             must be given if `True` (default: `True`)
-        :param content_type: optional, by default 'application/pdf' is used,
-            set to 'image/png' to create an PNG image instead
         :param stylesheets: list of additional stylesheets
         """
         self._stylesheets = stylesheets or []
-        self._content_type = kwargs.get('content_type')
         super().__init__(*args, **kwargs)
         if filename:
             display = 'attachment' if attachment else 'inline'
@@ -92,14 +86,12 @@ class WeasyTemplateResponse(TemplateResponse):
         Returns rendered PDF pages.
         """
         document = self.get_document()
-        if CONTENT_TYPE_PNG in self._content_type:
-            return document.write_png()
         return document.write_pdf()
 
 
 class WeasyTemplateResponseMixin(TemplateResponseMixin):
     response_class = WeasyTemplateResponse
-    content_type = CONTENT_TYPE_PDF
+    content_type = 'application/pdf'
     pdf_filename = None
     pdf_attachment = True
     pdf_stylesheets = []
