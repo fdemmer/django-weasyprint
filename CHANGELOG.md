@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix missing import in README example (2f33713, by @ScottBarkman)
 - Fix typo in CHANGELOG (293e6e7, by @GitRon)
 
+## [1.0.2.post1] - 2021-08-10
+
+- Pin WeasyPrint<53 due to module path change
+
 ## [1.0.2] - 2020-10-07
 
 - Handle `SCRIPT_NAME` being added to `MEDIA_URL` in Django 3.1

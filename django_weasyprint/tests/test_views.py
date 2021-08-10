@@ -9,7 +9,7 @@ class WeasyTemplateViewTestCase(SimpleTestCase):
         response = self.client.get('/html/')
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(sorted(response._headers.keys()), ['content-type'])
+        self.assertTrue(response.has_header('content-type'))
         self.assertEqual(response['content-type'], 'text/html; charset=utf-8')
         self.assertEqual(response.content, b'<h1>Example template</h1>\n')
 
@@ -17,11 +17,9 @@ class WeasyTemplateViewTestCase(SimpleTestCase):
         response = self.client.get('/pdf/')
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(
-            sorted(response._headers.keys()),
-            ['content-disposition', 'content-type'],
-        )
+        self.assertTrue(response.has_header('content-type'))
         self.assertEqual(response['content-type'], CONTENT_TYPE_PDF)
+        self.assertTrue(response.has_header('content-disposition'))
         self.assertEqual(
             response['content-disposition'],
             'attachment;filename="le-foo.pdf"',
@@ -32,6 +30,6 @@ class WeasyTemplateViewTestCase(SimpleTestCase):
         response = self.client.get('/png/')
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(sorted(response._headers.keys()), ['content-type'])
+        self.assertTrue(response.has_header('content-type'))
         self.assertEqual(response['content-type'], CONTENT_TYPE_PNG)
         self.assertEqual(response.content[1:4], b'PNG')
