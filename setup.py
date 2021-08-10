@@ -40,6 +40,6 @@ setup(
     setup_requires=['wheel'],
     install_requires=[
         'Django>=2.2',
-        'WeasyPrint>=43,<53',
+        'WeasyPrint>=53',
     ],
 )
