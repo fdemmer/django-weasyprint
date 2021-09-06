@@ -18,6 +18,7 @@ class WeasyTemplateResponse(TemplateResponse):
         :param stylesheets: list of additional stylesheets
         """
         self._stylesheets = stylesheets or []
+        self._font_config = weasyprint.fonts.FontConfiguration()
         super().__init__(*args, **kwargs)
         if filename:
             display = 'attachment' if attachment else 'inline'
@@ -39,19 +40,15 @@ class WeasyTemplateResponse(TemplateResponse):
         """
         return django_url_fetcher
 
-    def get_font_config(self):
-        """
-        A FreeType font configuration to handle @font-config rules.
-        """
-        return weasyprint.text.fonts.FontConfiguration()
-
     def get_css(self, base_url, url_fetcher):
+        font_config = self._font_config
         tmp = []
         for value in self._stylesheets:
             css = weasyprint.CSS(
                 value,
                 base_url=base_url,
                 url_fetcher=url_fetcher,
+                font_config=font_config
             )
             if css:
                 tmp.append(css)
@@ -68,7 +65,7 @@ class WeasyTemplateResponse(TemplateResponse):
         """
         base_url = self.get_base_url()
         url_fetcher = self.get_url_fetcher()
-        font_config = self.get_font_config()
+        font_config = self._font_config
 
         html = weasyprint.HTML(
             string=super().rendered_content,
