@@ -18,7 +18,7 @@ class WeasyTemplateResponse(TemplateResponse):
         :param stylesheets: list of additional stylesheets
         """
         self._stylesheets = stylesheets or []
-        self._font_config = weasyprint.fonts.FontConfiguration()
+        self._font_config = weasyprint.text.fonts.FontConfiguration()
         super().__init__(*args, **kwargs)
         if filename:
             display = 'attachment' if attachment else 'inline'
