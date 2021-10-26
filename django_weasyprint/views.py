@@ -51,13 +51,14 @@ class WeasyTemplateResponse(TemplateResponse):
         """
         return weasyprint.fonts.FontConfiguration()
 
-    def get_css(self, base_url, url_fetcher):
+    def get_css(self, base_url, url_fetcher, font_config):
         tmp = []
         for value in self._stylesheets:
             css = weasyprint.CSS(
                 value,
                 base_url=base_url,
                 url_fetcher=url_fetcher,
+                font_config=font_config,
             )
             if css:
                 tmp.append(css)
@@ -82,7 +83,7 @@ class WeasyTemplateResponse(TemplateResponse):
             url_fetcher=url_fetcher,
         )
         return html.render(
-            self.get_css(base_url, url_fetcher),
+            self.get_css(base_url, url_fetcher, font_config),
             font_config=font_config,
         )
 
