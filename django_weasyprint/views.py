@@ -25,7 +25,8 @@ class WeasyTemplateResponse(TemplateResponse):
 
     def get_base_url(self):
         """
-        Determine base URL to fetch CSS files from `WEASYPRINT_BASEURL` or
+        Determine base URL to fetch CSS or other files referenced with relative
+        paths in the HTML files using the `WEASYPRINT_BASEURL` setting or
         fall back to using the root path of the URL used in the request.
         """
         return getattr(
