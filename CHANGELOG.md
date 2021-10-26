@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - tbd.
+## [2.0.0] - 2021-10-26
 
-- WeasyPrint >= 53.0 is required ("PDF is the only output format supported!")
+- [WeasyPrint >= 53.0](https://github.com/Kozea/WeasyPrint/releases/tag/v53.0)
+  is required ("PDF is the only output format supported!")
 - Remove `PNGView` and `CONTENT_TYPE_*` constants
 - Add Django 3.2 to test matrix, remove 3.0
 
@@ -68,7 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.5.1] - 2018-03-08
 
-- Add `custom_url`_fetcher reading `file://` urls directly from disk or storage
+- Add `custom_url_fetcher` reading `file://` urls directly from disk or storage
 - Add `content_type` to WeasyTemplateResponse
 - Fixed example in README (46fc62e)
 
@@ -94,7 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2] - 2017-04-05
 
-- Transfer of GitHub repo to 'fdemmer'
+- Transfer of GitHub repo to Florian Demmer
 - Merge improvements by Tim Bell (6f10a0a), Thomas Desveaux (249ad56) and
   Bruno Alla (ce1e2dc, ddc0343)
 - Add generating PNG
