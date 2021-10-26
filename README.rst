@@ -14,8 +14,8 @@ A `Django`_ class-based view generating PDF responses using `WeasyPrint`_.
 .. |PyPI License| image:: https://img.shields.io/pypi/l/django-weasyprint.svg
    :target: https://pypi.python.org/pypi/django-weasyprint/
 
-.. |TravisCI Build| image:: https://travis-ci.com/fdemmer/django-weasyprint.svg?branch=main
-    :target: https://travis-ci.com/fdemmer/django-weasyprint
+.. |TravisCI Build| image:: https://app.travis-ci.com/fdemmer/django-weasyprint.svg?branch=main
+    :target: https://app.travis-ci.com/github/fdemmer/django-weasyprint
 
 
 Installing
