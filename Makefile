@@ -1,7 +1,7 @@
 all: _list
 
 test:
-	tox -p auto
+	tox --parallel auto --recreate
 
 clean:
 	rm -rf build dist
