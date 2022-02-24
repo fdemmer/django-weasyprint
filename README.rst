@@ -31,6 +31,13 @@ Install and update using `pip`_:
 If you run into any problems be sure to check their `install instructions
 <https://weasyprint.readthedocs.io/en/latest/install.html>`_ for help!
 
+.. important::
+   In version 53 WeasyPrint switched to pydyf as PDF generator instead of Cairo.
+   With that change PNG output was dropped and you might encounter other
+   changes in the generated PDF.
+
+   You can continue using WeasyPrint/Cairo by installing django-weasyprint 1.x!
+
 
 Usage
 -----
