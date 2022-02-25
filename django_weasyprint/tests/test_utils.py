@@ -10,7 +10,7 @@ from django_weasyprint.utils import django_url_fetcher
 class URLFetcherTest(SimpleTestCase):
     def test_default(self):
         # MEDIA_URL='' and STATIC_URL=None, all requests passed though
-        url = 'http://s3.amazon.test/images/image.jpg'
+        url = 'https://s3.amazon.test/images/image.jpg'
         with mock.patch('weasyprint.default_url_fetcher') as url_fetcher:
             django_url_fetcher(url)
         url_fetcher.assert_called_once_with(url)
