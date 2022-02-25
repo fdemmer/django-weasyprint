@@ -80,3 +80,31 @@ class URLFetcherTest(SimpleTestCase):
         self.assertEqual(data['filename'], 'styles.css')
         self.assertEqual(data['mime_type'], 'text/css')
         self.assertEqual(data['encoding'], None)
+
+    @override_settings(
+        STATIC_URL='/static/',
+        STATIC_ROOT='/www/static',
+        STATICFILES_STORAGE='django.contrib.staticfiles.storage.ManifestStaticFilesStorage',  # noqa
+    )
+    @mock.patch(
+        'django_weasyprint.utils.get_reversed_hashed_files',
+        return_value={'css/styles.60b250d16a6a.css': 'css/styles.css'}
+    )
+    @mock.patch('django_weasyprint.utils.open')
+    @mock.patch('django_weasyprint.utils.find', return_value='/www/static/css/styles.css')
+    def test_manifest_static(self, mock_find, mock_open, mock_reverse):
+        # request matches STATIC_URL, request handled
+        url = 'file:///static/css/styles.60b250d16a6a.css'
+        with mock.patch('weasyprint.default_url_fetcher') as url_fetcher:
+            data = django_url_fetcher(url)
+        url_fetcher.assert_not_called()
+        mock_find.assert_called_once_with('css/styles.css')
+        mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
+
+        self.assertEqual(
+            sorted(data.keys()),
+            ['encoding', 'file_obj', 'filename', 'mime_type'],
+        )
+        self.assertEqual(data['filename'], 'styles.css')
+        self.assertEqual(data['mime_type'], 'text/css')
+        self.assertEqual(data['encoding'], None)

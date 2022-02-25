@@ -1,16 +1,23 @@
 import mimetypes
+from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urlparse
 
 import weasyprint
 from django.conf import settings
 from django.contrib.staticfiles.finders import find
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import default_storage
 from django.urls import get_script_prefix
 
 
+@lru_cache(maxsize=None)
+def get_reversed_hashed_files():
+    return {v: k for k, v in staticfiles_storage.hashed_files.items()}
+
+
 def django_url_fetcher(url, *args, **kwargs):
-    # load file:// paths directly from disk
+    # attempt to load file:// paths to Django MEDIA or STATIC files directly from disk
     if url.startswith('file:'):
         mime_type, encoding = mimetypes.guess_type(url)
         url_path = urlparse(url).path
@@ -29,10 +36,19 @@ def django_url_fetcher(url, *args, **kwargs):
             data['file_obj'] = default_storage.open(path, 'rb')
             return data
 
+        # path looks like a static file based on configured STATIC_URL
         elif settings.STATIC_URL and url_path.startswith(settings.STATIC_URL):
-            path = url_path.replace(settings.STATIC_URL, '', 1)
-            data['file_obj'] = open(find(path), 'rb')
+            # strip the STATIC_URL prefix to get the relative filesystem path
+            relative_path = url_path.replace(settings.STATIC_URL, '', 1)
+            # detect hashed files storage and get path with un-hashed filename
+            if hasattr(staticfiles_storage, 'hashed_files'):
+                relative_path = get_reversed_hashed_files()[relative_path]
+                data['filename'] = Path(relative_path).name
+            # find the absolute path using the static file finders
+            absolute_path = find(relative_path)
+            data['file_obj'] = open(absolute_path, 'rb')
             return data
 
-    # fall back to weasyprint default fetcher
+    # Fall back to weasyprint default fetcher for http/s: and file: paths
+    # that did not match MEDIA_URL or STATIC_URL.
     return weasyprint.default_url_fetcher(url, *args, **kwargs)
