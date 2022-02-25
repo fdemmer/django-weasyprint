@@ -22,11 +22,11 @@ def django_url_fetcher(url, *args, **kwargs):
 
         default_media_url = settings.MEDIA_URL in ('', get_script_prefix())
         if not default_media_url and url_path.startswith(settings.MEDIA_URL):
-            media_root = settings.MEDIA_ROOT
-            if isinstance(settings.MEDIA_ROOT, Path):
-                media_root = f'{settings.MEDIA_ROOT}/'
-            path = url_path.replace(settings.MEDIA_URL, media_root, 1)
-            data['file_obj'] = default_storage.open(path)
+            cleaned_media_root = str(settings.MEDIA_ROOT)
+            if not cleaned_media_root.endswith('/'):
+                cleaned_media_root += '/'
+            path = url_path.replace(settings.MEDIA_URL, cleaned_media_root, 1)
+            data['file_obj'] = default_storage.open(path, 'rb')
             return data
 
         elif settings.STATIC_URL and url_path.startswith(settings.STATIC_URL):
