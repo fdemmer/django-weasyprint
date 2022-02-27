@@ -56,8 +56,10 @@ def django_url_fetcher(url, *args, **kwargs):
             # find the absolute path using the static file finders
             absolute_path = find(relative_path)
             log.debug('Static file finder returned: %s', absolute_path)
-            data['file_obj'] = open(absolute_path, 'rb')
-            return data
+            if absolute_path:
+                log.debug('Loading static file: %s', absolute_path)
+                data['file_obj'] = open(absolute_path, 'rb')
+                return data
 
     # Fall back to weasyprint default fetcher for http/s: and file: paths
     # that did not match MEDIA_URL or STATIC_URL.

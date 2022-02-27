@@ -89,3 +89,16 @@ class URLFetcherTest(SimpleTestCase):
         mock_find.assert_called_once_with('css/styles.css')
         mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
         self.assert_data(data, 'styles.css', 'text/css')
+
+    @override_settings(STATIC_URL='/static/', STATIC_ROOT='/www/static')
+    @mock.patch('django_weasyprint.utils.open')
+    @mock.patch('django_weasyprint.utils.find', return_value=None)
+    @mock.patch('weasyprint.default_url_fetcher')
+    def test_static_file_not_found(self, mock_fetcher, mock_find, mock_open):
+        # request matches STATIC_URL, request handled, but staticfiles finder returns None
+        url = 'file:///static/css/missing.css'
+        django_url_fetcher(url)
+        mock_find.assert_called_once_with('css/missing.css')
+        mock_open.assert_not_called()
+        # request was forwarded to default fetcher
+        mock_fetcher.assert_called_once_with('file:///static/css/missing.css')
