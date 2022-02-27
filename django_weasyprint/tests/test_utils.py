@@ -25,61 +25,49 @@ class URLFetcherTest(SimpleTestCase):
             django_url_fetcher(url)
         url_fetcher.assert_called_once_with(url)
 
-    @override_settings(MEDIA_URL='/media/', MEDIA_ROOT='/www/media')
-    @mock.patch('django_weasyprint.utils.default_storage.open')
-    def test_media(self, mock_open):
-        # request matches MEDIA_URL, request handled
-        url = 'file:///media/image.jpg'
-        with mock.patch('weasyprint.default_url_fetcher') as url_fetcher:
-            data = django_url_fetcher(url)
-        url_fetcher.assert_not_called()
-        mock_open.assert_called_once_with('/www/media/image.jpg', 'rb')
-
+    def assert_data(self, data, filename, mime_type):
         self.assertEqual(
             sorted(data.keys()),
             ['encoding', 'file_obj', 'filename', 'mime_type'],
         )
-        self.assertEqual(data['filename'], 'image.jpg')
-        self.assertEqual(data['mime_type'], 'image/jpeg')
+        self.assertEqual(data['filename'], filename)
+        self.assertEqual(data['mime_type'], mime_type)
         self.assertEqual(data['encoding'], None)
+
+    @override_settings(MEDIA_URL='/media/', MEDIA_ROOT='/www/media')
+    @mock.patch('django_weasyprint.utils.default_storage.open')
+    @mock.patch('weasyprint.default_url_fetcher')
+    def test_media(self, mock_fetcher, mock_open):
+        # request matches MEDIA_URL, request handled
+        url = 'file:///media/image.jpg'
+        data = django_url_fetcher(url)
+        mock_fetcher.assert_not_called()
+        mock_open.assert_called_once_with('/www/media/image.jpg', 'rb')
+        self.assert_data(data, 'image.jpg', 'image/jpeg')
 
     @override_settings(MEDIA_URL='/media/', MEDIA_ROOT=Path('/www/media'))
     @mock.patch('django_weasyprint.utils.default_storage.open')
-    def test_media_root_pathlib(self, mock_open):
+    @mock.patch('weasyprint.default_url_fetcher')
+    def test_media_root_pathlib(self, mock_fetcher, mock_open):
         # request matches MEDIA_URL, request handled
         url = 'file:///media/image.jpg'
-        with mock.patch('weasyprint.default_url_fetcher') as url_fetcher:
-            data = django_url_fetcher(url)
-        url_fetcher.assert_not_called()
+        data = django_url_fetcher(url)
+        mock_fetcher.assert_not_called()
         mock_open.assert_called_once_with('/www/media/image.jpg', 'rb')
-
-        self.assertEqual(
-            sorted(data.keys()),
-            ['encoding', 'file_obj', 'filename', 'mime_type'],
-        )
-        self.assertEqual(data['filename'], 'image.jpg')
-        self.assertEqual(data['mime_type'], 'image/jpeg')
-        self.assertEqual(data['encoding'], None)
+        self.assert_data(data, 'image.jpg', 'image/jpeg')
 
     @override_settings(STATIC_URL='/static/', STATIC_ROOT='/www/static')
     @mock.patch('django_weasyprint.utils.open')
     @mock.patch('django_weasyprint.utils.find', return_value='/www/static/css/styles.css')
-    def test_static(self, mock_find, mock_open):
+    @mock.patch('weasyprint.default_url_fetcher')
+    def test_static(self, mock_fetcher, mock_find, mock_open):
         # request matches STATIC_URL, request handled
         url = 'file:///static/css/styles.css'
-        with mock.patch('weasyprint.default_url_fetcher') as url_fetcher:
-            data = django_url_fetcher(url)
-        url_fetcher.assert_not_called()
+        data = django_url_fetcher(url)
+        mock_fetcher.assert_not_called()
         mock_find.assert_called_once_with('css/styles.css')
         mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
-
-        self.assertEqual(
-            sorted(data.keys()),
-            ['encoding', 'file_obj', 'filename', 'mime_type'],
-        )
-        self.assertEqual(data['filename'], 'styles.css')
-        self.assertEqual(data['mime_type'], 'text/css')
-        self.assertEqual(data['encoding'], None)
+        self.assert_data(data, 'styles.css', 'text/css')
 
     @override_settings(
         STATIC_URL='/static/',
@@ -92,19 +80,12 @@ class URLFetcherTest(SimpleTestCase):
     )
     @mock.patch('django_weasyprint.utils.open')
     @mock.patch('django_weasyprint.utils.find', return_value='/www/static/css/styles.css')
-    def test_manifest_static(self, mock_find, mock_open, mock_reverse):
+    @mock.patch('weasyprint.default_url_fetcher')
+    def test_manifest_static(self, mock_fetcher, mock_find, mock_open, mock_reverse):
         # request matches STATIC_URL, request handled
         url = 'file:///static/css/styles.60b250d16a6a.css'
-        with mock.patch('weasyprint.default_url_fetcher') as url_fetcher:
-            data = django_url_fetcher(url)
-        url_fetcher.assert_not_called()
+        data = django_url_fetcher(url)
+        mock_fetcher.assert_not_called()
         mock_find.assert_called_once_with('css/styles.css')
         mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
-
-        self.assertEqual(
-            sorted(data.keys()),
-            ['encoding', 'file_obj', 'filename', 'mime_type'],
-        )
-        self.assertEqual(data['filename'], 'styles.css')
-        self.assertEqual(data['mime_type'], 'text/css')
-        self.assertEqual(data['encoding'], None)
+        self.assert_data(data, 'styles.css', 'text/css')
