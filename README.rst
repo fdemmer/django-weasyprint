@@ -18,8 +18,8 @@ A `Django`_ class-based view generating PDF responses using `WeasyPrint`_.
     :target: https://app.travis-ci.com/github/fdemmer/django-weasyprint
 
 
-Installing
-----------
+Installation
+------------
 
 Install and update using `pip`_:
 
@@ -31,8 +31,9 @@ Install and update using `pip`_:
 If you run into any problems be sure to check their `install instructions
 <https://weasyprint.readthedocs.io/en/latest/install.html>`_ for help!
 
-.. important::
-   In version 53 WeasyPrint switched to pydyf as PDF generator instead of Cairo.
+.. tip::
+
+   In version 53 WeasyPrint switched to `pydyf`_ as PDF generator instead of Cairo.
    With that change PNG output was dropped and you might encounter other
    changes in the generated PDF.
 
@@ -52,6 +53,7 @@ Example
 
 .. code:: python
 
+    # views.py
     import functools
 
     from django.conf import settings
@@ -59,20 +61,28 @@ Example
 
     from django_weasyprint import WeasyTemplateResponseMixin
     from django_weasyprint.views import WeasyTemplateResponse
+    from django_weasyprint.utils import django_url_fetcher
 
 
     class MyDetailView(DetailView):
         # vanilla Django DetailView
         template_name = 'mymodel.html'
 
+    def custom_url_fetcher(url, *args, **kwargs):
+        # rewrite requests for CDN URLs to file path in STATIC_ROOT to use local file
+        cloud_storage_url = 'https://s3.amazonaws.com/django-weasyprint/static/'
+        if url.startswith(cloud_storage_url):
+            url = 'file://' + url.replace(cloud_storage_url, settings.STATIC_URL)
+        return django_url_fetcher(url, *args, **kwargs)
+
     class CustomWeasyTemplateResponse(WeasyTemplateResponse):
-        # customized response class to change the default URL fetcher
+        # customized response class to pass a kwarg to URL fetcher
         def get_url_fetcher(self):
             # disable host and certificate check
             context = ssl.create_default_context()
             context.check_hostname = False
             context.verify_mode = ssl.CERT_NONE
-            return functools.partial(django_url_fetcher, ssl_context=context)
+            return functools.partial(custom_url_fetcher, ssl_context=context)
 
     class PrintView(WeasyTemplateResponseMixin, MyDetailView):
         # output of MyDetailView rendered as PDF with hardcoded CSS
@@ -95,6 +105,34 @@ Example
                 at=timezone.now().strftime('%Y%m%d-%H%M'),
             )
 
+.. code:: html
+
+    <!-- mymodel.html -->
+    <!doctype html>
+    <html>
+        <head>
+            <!-- Use "static" template tag and configure STATIC_URL as usual. -->
+            <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+        </head>
+        <body>
+            Hello PDF-world!
+        </body>
+    </html>
+
+
+Settings
+--------
+
+By default ``WeasyTemplateResponse`` determines the ``base_url`` for
+`weasyprint.HTML`_ and `weasyprint.CSS`_ automatically using the request path.
+
+To disable that set ``WEASYPRINT_BASEURL`` to a fixed value, e.g.:
+
+.. code:: python
+
+    # Disable prefixing relative URLs with request.path, handle as absolute file paths
+    WEASYPRINT_BASEURL = '/'
+
 
 Changelog
 ---------
@@ -113,5 +151,9 @@ Links
 .. _pip: https://pip.pypa.io/en/stable/quickstart
 .. _Django: https://www.djangoproject.com
 .. _WeasyPrint: http://weasyprint.org
+.. _pydyf: https://doc.courtbouillon.org/pydyf/stable/
+
+.. _weasyprint.HTML: https://doc.courtbouillon.org/weasyprint/stable/api_reference.html?highlight=base_url#weasyprint.HTML
+.. _weasyprint.CSS: https://doc.courtbouillon.org/weasyprint/stable/api_reference.html?#weasyprint.CSS
 
 .. _CHANGELOG.md: https://github.com/fdemmer/django-weasyprint/blob/main/CHANGELOG.md
