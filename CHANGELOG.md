@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2022-08-07
+
+- Attempt to load static files from disk when using `ManifestStaticFilesStorage` (#48)
+- Add debug logging to django_url_fetcher
+- Add Python 3.10 and Django 4.1 to test matrix, remove Django 2.2
+
 ## [1.1.0.post2] - 2022-02-24
 
 Another post-release backporting fixes from 2.x for those still using WeasyPrint/Cairo.
