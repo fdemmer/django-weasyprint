@@ -15,6 +15,9 @@ setup(
     long_description=(Path(__file__).parent.resolve() / 'README.rst').read_text(),
     download_url=f'{github_url}/archive/v{VERSION}.tar.gz',
     url=github_url,
+    project_urls={
+        'Changelog': f'{github_url}/blob/v{VERSION}/CHANGELOG.md',
+    },
     license='Apache-2.0',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
