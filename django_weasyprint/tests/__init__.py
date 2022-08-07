@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 import django
@@ -7,6 +8,8 @@ from django.urls import path
 from django.views.generic import TemplateView
 
 from django_weasyprint import WeasyTemplateResponseMixin, WeasyTemplateView
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class BaseView(TemplateView):
