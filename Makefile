@@ -15,7 +15,7 @@ publish-test: clean build
 publish: clean build
 	@status=$$(git status --porcelain); \
 	if test "x$${status}" = x; then \
-		twine upload -r pypi --sign dist/*; \
+		twine upload -r django-weasyprint --sign dist/*; \
 	else \
 		echo Aborting upload: working directory is dirty >&2; \
 	fi;

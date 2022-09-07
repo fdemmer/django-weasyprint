@@ -1,43 +1,48 @@
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v3.4.0
-  hooks:
-  - id: check-builtin-literals
-  - id: check-merge-conflict
-  - id: debug-statements
-  - id: double-quote-string-fixer
-  - id: end-of-file-fixer
-    exclude: 'setup.cfg'
-  - id: fix-encoding-pragma
-    args: ['--remove']
-  - id: mixed-line-ending
-  - id: trailing-whitespace
-    args: ['--markdown-linebreak-ext=md']
-- repo: https://gitlab.com/pycqa/flake8
-  rev: 3.8.4
-  hooks:
-  - id: flake8
-    additional_dependencies:
-    - flake8-bandit
-    - flake8-bugbear
-    - flake8-builtins
-    - flake8-comprehensions
-    args: [
-      '--select=C90,E,F,W,W504',
-      '--ignore=E127,E128,E131,E265,F403,F405,W503',
-      '--max-line-length=90',
-    ]
-    exclude: migrations
-- repo: https://github.com/asottile/seed-isort-config
-  rev: v2.2.0
-  hooks:
-  - id: seed-isort-config
-- repo: https://github.com/timothycrosley/isort
-  rev: 5.7.0
-  hooks:
-  - id: isort
-- repo: https://github.com/asottile/pyupgrade
-  rev: v2.10.0
-  hooks:
-  - id: pyupgrade
-    args: ['--py36-plus']
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: check-builtin-literals
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: double-quote-string-fixer
+      - id: end-of-file-fixer
+        exclude: "setup.cfg"
+      - id: fix-encoding-pragma
+        args: ["--remove"]
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+        args: ["--markdown-linebreak-ext=md"]
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.4
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bandit
+          - flake8-bugbear
+          - flake8-builtins
+          - flake8-comprehensions
+        args:
+          [
+            "--select=C90,E,F,W,W504",
+            "--ignore=E127,E128,E131,E265,F403,F405,W503",
+            "--max-line-length=90",
+          ]
+        exclude: migrations
+  - repo: https://github.com/asottile/seed-isort-config
+    rev: v2.2.0
+    hooks:
+      - id: seed-isort-config
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.7.0
+    hooks:
+      - id: isort
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.10.0
+    hooks:
+      - id: pyupgrade
+        args: ["--py36-plus"]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.5.1
+    hooks:
+      - id: prettier
