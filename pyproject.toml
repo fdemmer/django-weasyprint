@@ -1,0 +1,10 @@
+[tool.coverage.run]
+branch = true
+dynamic_context = "test_function"
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+
+[tool.coverage.html]
+show_contexts = true
