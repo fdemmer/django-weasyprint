@@ -1,9 +1,13 @@
 django-weasyprint
 =================
 
-A `Django`_ class-based view generating PDF responses using `WeasyPrint`_.
+|Build| |Coverage| |PyPI Download| |PyPI Python Versions| |PyPI License|
 
-|Build| |PyPI Download| |PyPI Python Versions| |PyPI License|
+.. |Build| image:: https://github.com/fdemmer/django-weasyprint/workflows/CI/badge.svg?branch=main
+    :target: https://github.com/fdemmer/django-weasyprint/actions?workflow=CI
+
+.. |Coverage| image:: https://codecov.io/gh/fdemmer/django-weasyprint/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/fdemmer/django-weasyprint
 
 .. |PyPI Download| image:: https://img.shields.io/pypi/v/django-weasyprint.svg
    :target: https://pypi.python.org/pypi/django-weasyprint/
@@ -14,8 +18,8 @@ A `Django`_ class-based view generating PDF responses using `WeasyPrint`_.
 .. |PyPI License| image:: https://img.shields.io/pypi/l/django-weasyprint.svg
    :target: https://pypi.python.org/pypi/django-weasyprint/
 
-.. |Build| image:: https://github.com/fdemmer/django-weasyprint/workflows/CI/badge.svg?branch=main
-    :target: https://github.com/fdemmer/django-weasyprint/actions?workflow=CI
+
+A `Django`_ class-based view generating PDF responses using `WeasyPrint`_.
 
 
 Installation

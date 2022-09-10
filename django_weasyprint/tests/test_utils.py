@@ -4,10 +4,13 @@ from unittest import mock
 from django.test import SimpleTestCase, override_settings
 
 import django_weasyprint.tests  # noqa
-from django_weasyprint.utils import django_url_fetcher
+from django_weasyprint.utils import django_url_fetcher, get_reversed_hashed_files
 
 
 class URLFetcherTest(SimpleTestCase):
+    def setUp(self):
+        get_reversed_hashed_files.cache_clear()
+
     def test_default(self):
         # MEDIA_URL='' and STATIC_URL=None, all requests passed though
         url = 'https://s3.amazon.test/images/image.jpg'
@@ -34,10 +37,10 @@ class URLFetcherTest(SimpleTestCase):
         self.assertEqual(data['mime_type'], mime_type)
         self.assertEqual(data['encoding'], None)
 
-    @override_settings(MEDIA_URL='/media/', MEDIA_ROOT='/www/media')
+    @override_settings(MEDIA_URL='/media/', MEDIA_ROOT='/www/media/')
     @mock.patch('django_weasyprint.utils.default_storage.open')
     @mock.patch('weasyprint.default_url_fetcher')
-    def test_media(self, mock_fetcher, mock_open):
+    def test_media_with_trailing_slash(self, mock_fetcher, mock_open):
         # request matches MEDIA_URL, request handled
         url = 'file:///media/image.jpg'
         data = django_url_fetcher(url)
@@ -48,7 +51,7 @@ class URLFetcherTest(SimpleTestCase):
     @override_settings(MEDIA_URL='/media/', MEDIA_ROOT=Path('/www/media'))
     @mock.patch('django_weasyprint.utils.default_storage.open')
     @mock.patch('weasyprint.default_url_fetcher')
-    def test_media_root_pathlib(self, mock_fetcher, mock_open):
+    def test_media_root_pathlib_no_slash(self, mock_fetcher, mock_open):
         # request matches MEDIA_URL, request handled
         url = 'file:///media/image.jpg'
         data = django_url_fetcher(url)
@@ -75,13 +78,15 @@ class URLFetcherTest(SimpleTestCase):
         STATICFILES_STORAGE='django.contrib.staticfiles.storage.ManifestStaticFilesStorage',  # noqa
     )
     @mock.patch(
-        'django_weasyprint.utils.get_reversed_hashed_files',
-        return_value={'css/styles.60b250d16a6a.css': 'css/styles.css'}
+        'django_weasyprint.utils.staticfiles_storage.hashed_files',
+        new_callable=mock.PropertyMock(return_value={
+            'css/styles.css': 'css/styles.60b250d16a6a.css',
+        }),
     )
     @mock.patch('django_weasyprint.utils.open')
     @mock.patch('django_weasyprint.utils.find', return_value='/www/static/css/styles.css')
     @mock.patch('weasyprint.default_url_fetcher')
-    def test_manifest_static(self, mock_fetcher, mock_find, mock_open, mock_reverse):
+    def test_manifest_static(self, mock_fetcher, mock_find, mock_open, hashed_files):
         # request matches STATIC_URL, request handled
         url = 'file:///static/css/styles.60b250d16a6a.css'
         data = django_url_fetcher(url)
