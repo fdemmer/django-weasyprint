@@ -47,17 +47,19 @@ class WeasyTemplateResponse(TemplateResponse):
         return weasyprint.text.fonts.FontConfiguration()
 
     def get_css(self, base_url, url_fetcher, font_config):
-        tmp = []
-        for value in self._stylesheets:
-            css = weasyprint.CSS(
+        """
+        Load addtional additional stylesheets.
+        """
+        return [
+            weasyprint.CSS(
                 value,
                 base_url=base_url,
                 url_fetcher=url_fetcher,
                 font_config=font_config,
             )
-            if css:
-                tmp.append(css)
-        return tmp
+            for value
+            in self._stylesheets
+        ]
 
     def get_document(self):
         """
@@ -92,6 +94,9 @@ class WeasyTemplateResponse(TemplateResponse):
 
 
 class WeasyTemplateResponseMixin(TemplateResponseMixin):
+    """
+    Mixin for a CBV creating a ``WeasyTemplateResponse`` using the configured template.
+    """
     response_class = WeasyTemplateResponse
     content_type = 'application/pdf'
     pdf_filename = None
