@@ -47,7 +47,7 @@ If you run into any problems be sure to check their `install instructions
 Usage
 -----
 
-Use ``WeasyTemplateView`` as class based view base class or the just the
+Use ``WeasyTemplateView`` as class based view base class or the
 mixin ``WeasyTemplateResponseMixin`` on a ``TemplateView`` (or subclass
 thereof).
 
