@@ -80,7 +80,7 @@ class WeasyTemplateResponse(TemplateResponse):
             url_fetcher=url_fetcher,
         )
         return html.render(
-            self.get_css(base_url, url_fetcher, font_config),
+            stylesheets=self.get_css(base_url, url_fetcher, font_config),
             font_config=font_config,
         )
 
