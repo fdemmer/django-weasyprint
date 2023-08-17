@@ -10,12 +10,12 @@ build:
 	python setup.py sdist bdist_wheel
 
 publish-test: clean build
-	twine upload -r testpypi --sign dist/*
+	twine upload -r testpypi dist/*
 
 publish: clean build
 	@status=$$(git status --porcelain); \
 	if test "x$${status}" = x; then \
-		twine upload -r django-weasyprint --sign dist/*; \
+		twine upload -r django-weasyprint dist/*; \
 	else \
 		echo Aborting upload: working directory is dirty >&2; \
 	fi;
