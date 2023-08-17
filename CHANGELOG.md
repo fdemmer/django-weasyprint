@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2023-08-17
+
+- Support WeasyPrint v59.0 (#71)
+- Add Python 3.11 and Django 4.2 to test matrix, remove Python 3.6 and 3.7
+
 ## [2.2.0] - 2022-08-07
 
 - Attempt to load static files from disk when using `ManifestStaticFilesStorage` (#48)
