@@ -14,11 +14,6 @@ from django.urls import get_script_prefix
 log = logging.getLogger(__name__)
 
 
-@lru_cache(maxsize=None)
-def get_reversed_hashed_files():
-    return {v: k for k, v in staticfiles_storage.hashed_files.items()}
-
-
 def django_url_fetcher(url, *args, **kwargs):
     # attempt to load file:// paths to Django MEDIA or STATIC files directly from disk
     if url.startswith('file:'):
@@ -50,8 +45,11 @@ def django_url_fetcher(url, *args, **kwargs):
             # detect hashed files storage and get path with un-hashed filename
             if hasattr(staticfiles_storage, 'hashed_files'):
                 log.debug('Hashed static files storage detected')
-                relative_path = get_reversed_hashed_files()[relative_path]
-                data['filename'] = Path(relative_path).name
+                if settings.DEBUG:
+                    name = staticfiles_storage.stored_name(relative_path)
+                else:
+                    name = relative_path
+                data['filename'] = Path(name).name
             log.debug('Cleaned path: %s', relative_path)
             # find the absolute path using the static file finders
             absolute_path = find(relative_path)
