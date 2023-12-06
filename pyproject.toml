@@ -8,3 +8,30 @@ skip_covered = false
 
 [tool.coverage.html]
 show_contexts = true
+
+[tool.ruff]
+# https://beta.ruff.rs/docs/rules/
+select = [
+    "F", "E", "W", "C4", "C90", "B", "I", "INT", "PD", "PTH",
+    "D201", "D202", "D206", "D207", "D208", "D209", "D211", "D213",
+    "D300", "D403", "D419",
+]
+ignore = [
+    "E265",
+    "F403", "F405", "F722", "F821",
+    "C408",
+    "PD901",
+]
+fixable = ["I001"]
+target-version = "py38"
+line-length = 90
+
+[tool.ruff.isort]
+lines-after-imports = 2
+section-order = ["future", "standard-library", "third-party", "django", "first-party", "local-folder"]
+
+[tool.ruff.isort.sections]
+"django" = ["django"]
+
+[tool.ruff.mccabe]
+max-complexity = 10
