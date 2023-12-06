@@ -1,4 +1,4 @@
-django-weasyprint
+Django-WeasyPrint
 =================
 
 |Build| |Coverage| |PyPI Download| |PyPI Python Versions| |PyPI License|
@@ -128,13 +128,15 @@ Settings
 --------
 
 By default ``WeasyTemplateResponse`` determines the ``base_url`` for
-`weasyprint.HTML`_ and `weasyprint.CSS`_ automatically using the request path.
+`weasyprint.HTML`_ and `weasyprint.CSS`_ automatically using Django's
+``request.build_absolute_uri()``.
 
 To disable that set ``WEASYPRINT_BASEURL`` to a fixed value, e.g.:
 
 .. code:: python
 
-    # Disable prefixing relative URLs with request.path, handle as absolute file paths
+    # Disable prefixing relative URLs with request.build_absolute_uri().
+    # Instead, handle them as absolute file paths.
     WEASYPRINT_BASEURL = '/'
 
 
