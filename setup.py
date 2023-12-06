@@ -2,7 +2,8 @@ from pathlib import Path
 
 from setuptools import find_packages, setup
 
-VERSION = '2.2.1'
+
+VERSION = '2.2.2'
 github_url = 'https://github.com/fdemmer/django-weasyprint'
 
 
@@ -24,9 +25,8 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Django',
         'Framework :: Django :: 3.2',
-        'Framework :: Django :: 4.0',
-        'Framework :: Django :: 4.1',
         'Framework :: Django :: 4.2',
+        'Framework :: Django :: 5.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -37,6 +37,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=find_packages(),
