@@ -28,14 +28,15 @@ class URLFetcherTest(SimpleTestCase):
             django_url_fetcher(url)
         url_fetcher.assert_called_once_with(url)
 
-    def assert_data(self, data, filename, mime_type):
+    def assert_data(self, data, file_path, mime_type):
         self.assertEqual(
             sorted(data.keys()),
-            ['encoding', 'file_obj', 'filename', 'mime_type'],
+            ['encoding', 'file_obj', 'filename', 'mime_type', 'redirected_url'],
         )
-        self.assertEqual(data['filename'], filename)
+        self.assertEqual(data['filename'], Path(file_path).name)
         self.assertEqual(data['mime_type'], mime_type)
         self.assertEqual(data['encoding'], None)
+        self.assertEqual(data['redirected_url'], 'file://' + file_path)
 
     @override_settings(MEDIA_URL='/media/', MEDIA_ROOT='/www/media/')
     @mock.patch('django_weasyprint.utils.default_storage.open')
@@ -46,7 +47,7 @@ class URLFetcherTest(SimpleTestCase):
         data = django_url_fetcher(url)
         mock_fetcher.assert_not_called()
         mock_open.assert_called_once_with('/www/media/image.jpg', 'rb')
-        self.assert_data(data, 'image.jpg', 'image/jpeg')
+        self.assert_data(data, '/www/media/image.jpg', 'image/jpeg')
 
     @override_settings(MEDIA_URL='/media/', MEDIA_ROOT=Path('/www/media'))
     @mock.patch('django_weasyprint.utils.default_storage.open')
@@ -57,7 +58,7 @@ class URLFetcherTest(SimpleTestCase):
         data = django_url_fetcher(url)
         mock_fetcher.assert_not_called()
         mock_open.assert_called_once_with('/www/media/image.jpg', 'rb')
-        self.assert_data(data, 'image.jpg', 'image/jpeg')
+        self.assert_data(data, '/www/media/image.jpg', 'image/jpeg')
 
     @override_settings(STATIC_URL='/static/', STATIC_ROOT='/www/static')
     @mock.patch('django_weasyprint.utils.open')
@@ -70,7 +71,7 @@ class URLFetcherTest(SimpleTestCase):
         mock_fetcher.assert_not_called()
         mock_find.assert_called_once_with('css/styles.css')
         mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
-        self.assert_data(data, 'styles.css', 'text/css')
+        self.assert_data(data, '/www/static/css/styles.css', 'text/css')
 
     @override_settings(
         STATIC_URL='/static/',
@@ -93,7 +94,7 @@ class URLFetcherTest(SimpleTestCase):
         mock_fetcher.assert_not_called()
         mock_find.assert_called_once_with('css/styles.css')
         mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
-        self.assert_data(data, 'styles.css', 'text/css')
+        self.assert_data(data, '/www/static/css/styles.css', 'text/css')
 
     @override_settings(STATIC_URL='/static/', STATIC_ROOT='/www/static')
     @mock.patch('django_weasyprint.utils.open')

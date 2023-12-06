@@ -5,11 +5,13 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import weasyprint
+
 from django.conf import settings
 from django.contrib.staticfiles.finders import find
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import default_storage
 from django.urls import get_script_prefix
+
 
 log = logging.getLogger(__name__)
 
@@ -37,9 +39,10 @@ def django_url_fetcher(url, *args, **kwargs):
             cleaned_media_root = str(settings.MEDIA_ROOT)
             if not cleaned_media_root.endswith('/'):
                 cleaned_media_root += '/'
-            path = url_path.replace(settings.MEDIA_URL, cleaned_media_root, 1)
-            log.debug('Cleaned path: %s', path)
-            data['file_obj'] = default_storage.open(path, 'rb')
+            absolute_path = url_path.replace(settings.MEDIA_URL, cleaned_media_root, 1)
+            log.debug('Cleaned path: %s', absolute_path)
+            data['file_obj'] = default_storage.open(absolute_path, 'rb')
+            data['redirected_url'] = 'file://' + absolute_path
             return data
 
         # path looks like a static file based on configured STATIC_URL
@@ -59,6 +62,7 @@ def django_url_fetcher(url, *args, **kwargs):
             if absolute_path:
                 log.debug('Loading static file: %s', absolute_path)
                 data['file_obj'] = open(absolute_path, 'rb')
+                data['redirected_url'] = 'file://' + absolute_path
                 return data
 
     # Fall back to weasyprint default fetcher for http/s: and file: paths

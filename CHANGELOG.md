@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.2.2] - 2023-12-06
 
+- Improve URL Fetcher to return `redirected_url` with 'file://' prefix for
+  image cache using [LazyLocalImage](https://github.com/Kozea/WeasyPrint/pull/1853)
+  with WeasyPrint v59.0 (#74)
 - Add Python 3.12 and Django 5.0 to test matrix, remove Django 4.0 and 4.1
 
 ## [2.2.1] - 2023-08-17
