@@ -101,6 +101,8 @@ Example
     class DownloadView(WeasyTemplateResponseMixin, MyDetailView):
         # suggested filename (is required for attachment/download!)
         pdf_filename = 'foo.pdf'
+        # set PDF variant to pdf/ua-1
+        pdf_options = {'pdf_variant': 'pdf/ua-1'}
 
     class DynamicNameView(WeasyTemplateResponseMixin, MyDetailView):
         # dynamically generate filename

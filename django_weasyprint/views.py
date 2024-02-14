@@ -7,7 +7,7 @@ from django_weasyprint.utils import django_url_fetcher
 
 
 class WeasyTemplateResponse(TemplateResponse):
-    def __init__(self, filename=None, stylesheets=None, attachment=True,
+    def __init__(self, filename=None, stylesheets=None, attachment=True, options=None,
                  *args, **kwargs):
         """
         An HTTP response class with PDF or PNG document as content.
@@ -16,8 +16,10 @@ class WeasyTemplateResponse(TemplateResponse):
         :param attachment: set `Content-Disposition` 'attachment', a `filename`
             must be given if `True` (default: `True`)
         :param stylesheets: list of additional stylesheets
+        :param options: dictionary of options passed to WeasyPrint
         """
         self._stylesheets = stylesheets or []
+        self._options = options.copy() if options else {}
         super().__init__(*args, **kwargs)
         if filename:
             display = 'attachment' if attachment else 'inline'
@@ -79,9 +81,15 @@ class WeasyTemplateResponse(TemplateResponse):
             base_url=base_url,
             url_fetcher=url_fetcher,
         )
+
+        self._options.setdefault(
+            'stylesheets',
+            self.get_css(base_url, url_fetcher, font_config),
+        )
+
         return html.render(
-            stylesheets=self.get_css(base_url, url_fetcher, font_config),
             font_config=font_config,
+            **self._options,
         )
 
     @property
@@ -90,7 +98,7 @@ class WeasyTemplateResponse(TemplateResponse):
         Returns rendered PDF pages.
         """
         document = self.get_document()
-        return document.write_pdf()
+        return document.write_pdf(**self._options)
 
 
 class WeasyTemplateResponseMixin(TemplateResponseMixin):
@@ -102,6 +110,7 @@ class WeasyTemplateResponseMixin(TemplateResponseMixin):
     pdf_filename = None
     pdf_attachment = True
     pdf_stylesheets = []
+    pdf_options = {}
 
     def get_pdf_filename(self):
         """
@@ -122,6 +131,12 @@ class WeasyTemplateResponseMixin(TemplateResponseMixin):
         """
         return self.pdf_stylesheets
 
+    def get_pdf_options(self):
+        """
+        Returns dictionary of WeasyPrint options.
+        """
+        return self.pdf_options
+
     def render_to_response(self, context, **response_kwargs):
         """
         Renders PDF document and prepares response by calling on
@@ -134,6 +149,7 @@ class WeasyTemplateResponseMixin(TemplateResponseMixin):
             'attachment': self.pdf_attachment,
             'filename': self.get_pdf_filename(),
             'stylesheets': self.get_pdf_stylesheets(),
+            'options': self.get_pdf_options(),
         })
         return super().render_to_response(
             context, **response_kwargs
