@@ -1,4 +1,5 @@
 import weasyprint
+
 from django.conf import settings
 from django.template.response import TemplateResponse
 from django.views.generic.base import ContextMixin, TemplateResponseMixin, View
