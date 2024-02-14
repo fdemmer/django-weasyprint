@@ -61,7 +61,7 @@ def django_url_fetcher(url, *args, **kwargs):
             log.debug('Static file finder returned: %s', absolute_path)
             if absolute_path:
                 log.debug('Loading static file: %s', absolute_path)
-                data['file_obj'] = open(absolute_path, 'rb')
+                data['file_obj'] = open(absolute_path, 'rb')  # noqa: PTH123
                 data['redirected_url'] = 'file://' + absolute_path
                 return data
 
