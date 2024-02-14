@@ -53,8 +53,15 @@ def django_url_fetcher(url, *args, **kwargs):
             # detect hashed files storage and get path with un-hashed filename
             if hasattr(staticfiles_storage, 'hashed_files'):
                 log.debug('Hashed static files storage detected')
-                relative_path = get_reversed_hashed_files()[relative_path]
-                data['filename'] = Path(relative_path).name
+                try:
+                    relative_path = get_reversed_hashed_files()[relative_path]
+                except KeyError:
+                    # We should still support requests that use the non-hashed
+                    # path when ManifestStaticFilesStorage is used. This happens
+                    # for example when DEBUG is set to True.
+                    pass
+                else:
+                    data['filename'] = Path(relative_path).name
             log.debug('Cleaned path: %s', relative_path)
             # find the absolute path using the static file finders
             absolute_path = find(relative_path)
