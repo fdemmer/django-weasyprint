@@ -4,12 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2024-02-23
+
+- Make it possible to set [WeasyPrint options][2] via `WeasyTemplateResponse` (#79)
+
+[2]: https://doc.courtbouillon.org/weasyprint/stable/api_reference.html#weasyprint.DEFAULT_OPTIONS
+
 ## [2.2.2] - 2023-12-06
 
 - Improve URL Fetcher to return `redirected_url` with 'file://' prefix for
-  image cache using [LazyLocalImage](https://github.com/Kozea/WeasyPrint/pull/1853)
-  with WeasyPrint v59.0 (#74)
+  image cache using [LazyLocalImage][2] with WeasyPrint v59.0 (#74)
 - Add Python 3.12 and Django 5.0 to test matrix, remove Django 4.0 and 4.1
+
+[1]: https://github.com/Kozea/WeasyPrint/pull/1853
 
 ## [2.2.1] - 2023-08-17
 
