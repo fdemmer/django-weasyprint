@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.3.0] - 2024-02-23
 
 - Make it possible to set [WeasyPrint options][2] via `WeasyTemplateResponse` (#79)
+- Add support for non-hashed path when `ManifestStaticFilesStorage` is used with `DEBUG=True`
 
 [2]: https://doc.courtbouillon.org/weasyprint/stable/api_reference.html#weasyprint.DEFAULT_OPTIONS
 

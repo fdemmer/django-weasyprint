@@ -96,6 +96,18 @@ class URLFetcherTest(SimpleTestCase):
         mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
         self.assert_data(data, '/www/static/css/styles.css', 'text/css')
 
+        mock_find.reset_mock()
+        mock_open.reset_mock()
+
+        # ManifestStaticFilesStorage.url() returns un-hashed URL with DEBUG=True,
+        # django_url_fetcher() is still able to find the file.
+        with override_settings(DEBUG=True):
+            data = django_url_fetcher('file:///static/css/styles.css')
+        mock_fetcher.assert_not_called()
+        mock_find.assert_called_once_with('css/styles.css')
+        mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
+        self.assert_data(data, '/www/static/css/styles.css', 'text/css')
+
     @override_settings(STATIC_URL='/static/', STATIC_ROOT='/www/static')
     @mock.patch('django_weasyprint.utils.open')
     @mock.patch('django_weasyprint.utils.find', return_value=None)

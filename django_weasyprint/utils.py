@@ -51,7 +51,7 @@ def django_url_fetcher(url, *args, **kwargs):
             # strip the STATIC_URL prefix to get the relative filesystem path
             relative_path = url_path.replace(settings.STATIC_URL, '', 1)
             # detect hashed files storage and get path with un-hashed filename
-            if hasattr(staticfiles_storage, 'hashed_files'):
+            if not settings.DEBUG and hasattr(staticfiles_storage, 'hashed_files'):
                 log.debug('Hashed static files storage detected')
                 relative_path = get_reversed_hashed_files()[relative_path]
                 data['filename'] = Path(relative_path).name

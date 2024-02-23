@@ -15,6 +15,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 settings.configure(
+    DEBUG=False,
     SECRET_KEY=get_random_secret_key(),
     ALLOWED_HOSTS=['testserver'],
     ROOT_URLCONF=__name__,
