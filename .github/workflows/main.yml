@@ -35,6 +35,6 @@ jobs:
         run: python -m coverage xml
       - name: Upload coverage to Codecov
         if: contains(env.USING_COVERAGE, matrix.python-version)
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: false
