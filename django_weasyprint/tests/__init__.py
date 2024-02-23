@@ -44,21 +44,16 @@ class PDFDownloadView(WeasyTemplateResponseMixin, BaseView):
     pdf_filename = 'le-foo.pdf'
     # additional stylesheet(s)
     pdf_stylesheets = [static('css/print.css')]
+    # overrides for weasyprint.DEFAULT_OPTIONS
+    pdf_options = {'pdf_version': '1.6'}
 
 
 class PDFView(WeasyTemplateView):
     template_name = 'example.html'
 
 
-class PDFOptionsView(WeasyTemplateView):
-    template_name = 'example.html'
-    pdf_stylesheets = [static('css/print.css')]
-    pdf_options = {'pdf_version': '1.6'}
-
-
 urlpatterns = [
     path('html/', BaseView.as_view()),
     path('pdf/', PDFView.as_view()),
     path('pdf/download/', PDFDownloadView.as_view()),
-    path('pdf/options/', PDFOptionsView.as_view()),
 ]
