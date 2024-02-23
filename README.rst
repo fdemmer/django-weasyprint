@@ -117,14 +117,14 @@ Example
     from celery import shared_task
     from django.template.loader import render_to_string
 
-    from views import custom_url_fetcher
+    from django_weasyprint.utils import django_url_fetcher
 
     @shared_task
     def generate_pdf(filename='mymodel.pdf'):
         weasy_html = weasyprint.HTML(
-            base_url='file://',
             string=render_to_string('mymodel.html'),
-            url_fetcher=custom_url_fetcher,
+            url_fetcher=django_url_fetcher,
+            base_url='file://',
         )
         weasy_html.write_pdf(filename)
 
