@@ -51,7 +51,7 @@ class WeasyTemplateResponse(TemplateResponse):
 
     def get_css(self, base_url, url_fetcher, font_config):
         """
-        Load addtional additional stylesheets.
+        Load additional stylesheets.
         """
         return [
             weasyprint.CSS(
