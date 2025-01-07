@@ -6,8 +6,8 @@ Django-WeasyPrint
 .. |Build| image:: https://github.com/fdemmer/django-weasyprint/workflows/CI/badge.svg?branch=main
     :target: https://github.com/fdemmer/django-weasyprint/actions?workflow=CI
 
-.. |Coverage| image:: https://codecov.io/gh/fdemmer/django-weasyprint/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/fdemmer/django-weasyprint
+.. |Coverage| image:: https://codecov.io/github/fdemmer/django-weasyprint/branch/main/graph/badge.svg?token=aF7vd6Cx2P
+    :target: https://codecov.io/github/fdemmer/django-weasyprint
 
 .. |PyPI Download| image:: https://img.shields.io/pypi/v/django-weasyprint.svg
    :target: https://pypi.python.org/pypi/django-weasyprint/
