@@ -11,7 +11,7 @@ on:
 jobs:
   tests:
     name: tox on ${{ matrix.python-version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       USING_COVERAGE: "3.11"
     strategy:
