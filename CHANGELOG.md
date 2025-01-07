@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2025-01-07
+
+- Merge contributed docs fixes (a1c2ace, by @GorlikItsMe and 059c4ff, by @amy-mac)
+- Update test matrix to cover various WeasyPrint and pydyf combinations
+- Add Python 3.13 and Django 5.0 & 5.1 to test matrix (with test fix)
+
 ## [2.3.0] - 2024-02-23
 
 - Make it possible to set [WeasyPrint options][2] via `WeasyTemplateResponse` (#79)
