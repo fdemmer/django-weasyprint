@@ -77,6 +77,11 @@ class URLFetcherTest(SimpleTestCase):
         STATIC_URL='/static/',
         STATIC_ROOT='/www/static',
         STATICFILES_STORAGE='django.contrib.staticfiles.storage.ManifestStaticFilesStorage',  # noqa
+        STORAGES={
+            'staticfiles': {
+                'BACKEND': 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage',  # noqa
+            },
+        }
     )
     @mock.patch(
         'django_weasyprint.utils.staticfiles_storage.hashed_files',
