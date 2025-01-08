@@ -2,7 +2,7 @@ from unittest import mock
 
 from django.test import SimpleTestCase
 
-import django_weasyprint.tests  # noqa
+import tests  # noqa
 
 
 class WeasyTemplateViewTestCase(SimpleTestCase):

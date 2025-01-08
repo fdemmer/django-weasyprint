@@ -3,7 +3,7 @@ from unittest import mock
 
 from django.test import SimpleTestCase, override_settings
 
-import django_weasyprint.tests  # noqa
+import tests  # noqa
 from django_weasyprint.utils import django_url_fetcher, get_reversed_hashed_files
 
 

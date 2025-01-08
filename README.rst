@@ -35,7 +35,7 @@ Install and update using `pip`_:
 If you run into any problems be sure to check their `install instructions
 <https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation>`_ for help!
 
-.. tip::
+.. Tip::
 
    In version 53 WeasyPrint switched to `pydyf`_ as PDF generator instead of Cairo.
    With that change PNG output was dropped and you might encounter other
