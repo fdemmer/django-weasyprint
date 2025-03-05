@@ -1,4 +1,9 @@
-include LICENSE README* CHANGELOG*
+include LICENSE* README* CHANGELOG*
 
+# Include test files
+recursive-include tests *.py
+recursive-include tests/templates *.html
+
+# Exclude cache files
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

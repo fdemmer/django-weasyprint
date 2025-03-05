@@ -2,8 +2,6 @@ from unittest import mock
 
 from django.test import SimpleTestCase
 
-import django_weasyprint.tests  # noqa
-
 
 class WeasyTemplateViewTestCase(SimpleTestCase):
     def test_get_html(self):

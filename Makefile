@@ -5,17 +5,18 @@ test:
 
 clean:
 	rm -rf build dist
+	rm -rf *.egg-info
 
 build:
-	python setup.py sdist bdist_wheel
+	python -m build
 
 publish-test: clean build
-	twine upload -r testpypi dist/*
+	python -m twine upload -r testpypi dist/*
 
 publish: clean build
 	@status=$$(git status --porcelain); \
 	if test "x$${status}" = x; then \
-		twine upload -r django-weasyprint dist/*; \
+		python -m twine upload -r django-weasyprint dist/*; \
 	else \
 		echo Aborting upload: working directory is dirty >&2; \
 	fi;
