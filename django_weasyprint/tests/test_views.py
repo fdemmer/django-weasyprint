@@ -34,10 +34,16 @@ class WeasyTemplateViewTestCase(SimpleTestCase):
         self.assertEqual(response.content[:8], b'%PDF-1.6')
 
     def test_get_pdf(self):
-        response = self.client.get('/pdf/')
-        self.assertEqual(response.status_code, 200)
+        urls = [
+            '/pdf/',
+            '/pdf/view/',
+        ]
+        for url in urls:
+            with self.subTest(url=url):
+                response = self.client.get(url)
+                self.assertEqual(response.status_code, 200)
 
-        self.assertTrue(response.has_header('content-type'))
-        self.assertEqual(response['content-type'], 'application/pdf')
-        self.assertFalse(response.has_header('content-disposition'))
-        self.assertEqual(response.content[:4], b'%PDF')
+                self.assertTrue(response.has_header('content-type'))
+                self.assertEqual(response['content-type'], 'application/pdf')
+                self.assertFalse(response.has_header('content-disposition'))
+                self.assertEqual(response.content[:4], b'%PDF')

@@ -8,20 +8,57 @@ from django_weasyprint.utils import django_url_fetcher
 
 
 class WeasyTemplateResponse(TemplateResponse):
-    def __init__(self, filename=None, stylesheets=None, attachment=True, options=None,
-                 *args, **kwargs):
+    def __init__(
+            self,
+            request,
+            template,
+            context=None,
+            content_type=None,
+            status=None,
+            charset=None,
+            using=None,
+            headers=None,
+            filename=None,
+            attachment=True,
+            stylesheets=None,
+            options=None,
+        ):
         """
-        An HTTP response class with PDF or PNG document as content.
+        An HTTP response class with template and context rendered to a PDF document.
+
+        Django TemplateResponse arguments:
+
+        :param request: the request object
+        :param template: template to use to render the response
+        :param context: context to use to render the response
+        :param content_type: content type of the response (default: 'application/pdf')
+        :param status: status code of the response (default: 200)
+        :param charset: character set of the response (default: settings.DEFAULT_CHARSET)
+        :param using: template engine to use (default: 'django')
+        :param headers: dictionary of headers to use in the response
+
+        WeasyPrint specific arguments:
 
         :param filename: set `Content-Disposition` to use this filename
-        :param attachment: set `Content-Disposition` 'attachment', a `filename`
-            must be given if `True` (default: `True`)
+        :param attachment: set `Content-Disposition` 'attachment';
+            A `filename` must be given to enable this even if set to `True`.
+            (default: `True`)
         :param stylesheets: list of additional stylesheets
         :param options: dictionary of options passed to WeasyPrint
         """
         self._stylesheets = stylesheets or []
         self._options = options.copy() if options else {}
-        super().__init__(*args, **kwargs)
+
+        kwargs = dict(
+            context=context,
+            content_type=content_type or WeasyTemplateResponseMixin.content_type,
+            status=status,
+            charset=charset,
+            using=using,
+            headers=headers,
+        )
+        super().__init__(request, template, **kwargs)
+
         if filename:
             display = 'attachment' if attachment else 'inline'
             self['Content-Disposition'] = f'{display};filename="{filename}"'

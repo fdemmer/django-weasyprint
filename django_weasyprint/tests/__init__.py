@@ -8,7 +8,11 @@ from django.templatetags.static import static
 from django.urls import path
 from django.views.generic import TemplateView
 
-from django_weasyprint import WeasyTemplateResponseMixin, WeasyTemplateView
+from django_weasyprint import (
+    WeasyTemplateResponse,
+    WeasyTemplateResponseMixin,
+    WeasyTemplateView,
+)
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -53,8 +57,13 @@ class PDFView(WeasyTemplateView):
     template_name = 'example.html'
 
 
+def pdf_view(request):
+    return WeasyTemplateResponse(request, 'example.html', {})
+
+
 urlpatterns = [
     path('html/', BaseView.as_view()),
     path('pdf/', PDFView.as_view()),
+    path('pdf/view/', pdf_view),
     path('pdf/download/', PDFDownloadView.as_view()),
 ]

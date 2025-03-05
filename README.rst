@@ -111,6 +111,10 @@ Example
                 at=timezone.now().strftime('%Y%m%d-%H%M'),
             )
 
+    def simple_function_view(request):
+        # minimal boilerplate usage :)
+        return WeasyTemplateResponse(request, 'example.html', context={})
+
 .. code:: python
 
     # tasks.py
