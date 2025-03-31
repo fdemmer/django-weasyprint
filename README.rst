@@ -3,7 +3,7 @@ Django-WeasyPrint
 
 |Build| |Coverage| |PyPI Download| |PyPI Python Versions| |PyPI License|
 
-.. |Build| image:: https://github.com/fdemmer/django-weasyprint/workflows/CI/badge.svg?branch=main
+.. |Build| image:: https://github.com/fdemmer/django-weasyprint/actions/workflows/main.yml/badge.svg?branch=main
     :target: https://github.com/fdemmer/django-weasyprint/actions?workflow=CI
 
 .. |Coverage| image:: https://codecov.io/github/fdemmer/django-weasyprint/branch/main/graph/badge.svg?token=aF7vd6Cx2P
