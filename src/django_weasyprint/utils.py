@@ -5,14 +5,15 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import weasyprint
+from weasyprint import URLFetcher
+from weasyprint.urls import URLFetcherResponse
 
 from django.conf import settings
 from django.contrib.staticfiles.finders import find
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import default_storage
 from django.urls import get_script_prefix
-from weasyprint import URLFetcher
-from weasyprint.urls import URLFetcherResponse
+
 
 log = logging.getLogger(__name__)
 
@@ -23,43 +24,43 @@ def get_reversed_hashed_files():
 
 class DjangoUrlFetcher(URLFetcher):
     def fetch(self, url, headers=None):
-        if url.startswith("file:"):
-            log.debug("Attempt to fetch from %s", url)
+        if url.startswith('file:'):
+            log.debug('Attempt to fetch from %s', url)
             mime_type, _ = mimetypes.guess_type(url)
             url_path = urlparse(url).path
-            default_media_url = settings.MEDIA_URL in ("", get_script_prefix())
+            default_media_url = settings.MEDIA_URL in ('', get_script_prefix())
             if not default_media_url and url_path.startswith(settings.MEDIA_URL):
                 log.debug('URL contains MEDIA_URL (%s)', settings.MEDIA_URL)
                 cleaned_media_root = str(settings.MEDIA_ROOT)
-                if not cleaned_media_root.endswith("/"):
-                    cleaned_media_root += "/"
+                if not cleaned_media_root.endswith('/'):
+                    cleaned_media_root += '/'
                 absolute_path = url_path.replace(
                     settings.MEDIA_URL, cleaned_media_root, 1
                 )
-                log.debug("Cleaned path: %s", absolute_path)
-                body = default_storage.open(absolute_path, "rb")
-                redirected_url = "file://" + absolute_path
+                log.debug('Cleaned path: %s', absolute_path)
+                body = default_storage.open(absolute_path, 'rb')
+                redirected_url = 'file://' + absolute_path
                 return URLFetcherResponse(
-                    redirected_url, body, {"Content-Type": mime_type}
+                    redirected_url, body, {'Content-Type': mime_type}
                 )
 
             # path looks like a static file based on configured STATIC_URL
             elif settings.STATIC_URL and url_path.startswith(settings.STATIC_URL):
-                log.debug("URL contains STATIC_URL (%s)", settings.STATIC_URL)
+                log.debug('URL contains STATIC_URL (%s)', settings.STATIC_URL)
                 # strip the STATIC_URL prefix to get the relative filesystem path
-                relative_path = url_path.replace(settings.STATIC_URL, "", 1)
+                relative_path = url_path.replace(settings.STATIC_URL, '', 1)
                 # detect hashed files storage and get path with un-hashed filename
-                if not settings.DEBUG and hasattr(staticfiles_storage, "hashed_files"):
-                    log.debug("Hashed static files storage detected")
+                if not settings.DEBUG and hasattr(staticfiles_storage, 'hashed_files'):
+                    log.debug('Hashed static files storage detected')
                     relative_path = get_reversed_hashed_files()[relative_path]
                 # find the absolute path using the static file finders
                 absolute_path = find(relative_path)
                 if absolute_path:
-                    log.debug("Loading static file: %s", absolute_path)
-                    body = open(absolute_path, "rb")
-                    redirected_url = "file://" + absolute_path
+                    log.debug('Loading static file: %s', absolute_path)
+                    body = open(absolute_path, 'rb')  # noqa: PTH123
+                    redirected_url = 'file://' + absolute_path
                     return URLFetcherResponse(
-                        redirected_url, body, {"Content-Type": mime_type}
+                        redirected_url, body, {'Content-Type': mime_type}
                     )
         # Fall back to weasyprint default fetcher for http/s: and file: paths
         # that did not match MEDIA_URL or STATIC_URL.
