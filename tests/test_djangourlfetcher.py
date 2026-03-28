@@ -12,22 +12,22 @@ class URLFetcherTest(SimpleTestCase):
     def setUp(self):
         get_reversed_hashed_files.cache_clear()
 
-    # def test_default(self):
+    def test_default(self):
         # MEDIA_URL='' and STATIC_URL=None, all requests passed though
-        # url = 'https://s3.amazon.test/images/image.jpg'
-        # with mock.patch('weasyprint.URLFetcher') as url_fetcher:
-        #     DjangoUrlFetcher().fetch(url)
-        # url_fetcher.assert_called_once_with(url)
-        #
-        # url = 'file:///media/image.jpg'
-        # with mock.patch('weasyprint.URLFetcher') as url_fetcher:
-        #     DjangoUrlFetcher().fetch(url)
-        # url_fetcher.assert_called_once_with(url)
+        url = 'https://s3.amazon.test/images/image.jpg'
+        with mock.patch('weasyprint.URLFetcher') as url_fetcher:
+            DjangoUrlFetcher().fetch(url)
+        url_fetcher.assert_called_once_with(url)
 
-        # url = 'file:///static/styles.css'
-        # with mock.patch('weasyprint.URLFetcher') as url_fetcher:
-        #     DjangoUrlFetcher().fetch(url)
-        # url_fetcher.assert_called_once_with(url)
+        url = 'file:///media/image.jpg'
+        with mock.patch('weasyprint.URLFetcher') as url_fetcher:
+            DjangoUrlFetcher().fetch(url)
+        url_fetcher.assert_called_once_with(url)
+
+        url = 'file:///static/styles.css'
+        with mock.patch('weasyprint.URLFetcher') as url_fetcher:
+            DjangoUrlFetcher().fetch(url)
+        url_fetcher.assert_called_once_with(url)
 
     def assert_data(self, data, file_path, mime_type):
         self.assertIsInstance(data, URLFetcherResponse)
@@ -110,16 +110,16 @@ class URLFetcherTest(SimpleTestCase):
         mock_open.assert_called_once_with('/www/static/css/styles.css', 'rb')
         self.assert_data(data, '/www/static/css/styles.css', 'text/css')
 
-    # @override_settings(STATIC_URL='/static/', STATIC_ROOT='/www/static')
-    # @mock.patch('django_weasyprint.utils.open')
-    # @mock.patch('django_weasyprint.utils.find', return_value=None)
-    # @mock.patch('weasyprint.default_url_fetcher')
-    # def test_static_file_not_found(self, mock_fetcher, mock_find, mock_open):
-    #     # request matches STATIC_URL, request handled,
-    #     # but staticfiles finder returns None
-    #     url = 'file:///static/css/missing.css'
-    #     django_url_fetcher(url)
-    #     mock_find.assert_called_once_with('css/missing.css')
-    #     mock_open.assert_not_called()
-    #     # request was forwarded to default fetcher
-    #     mock_fetcher.assert_called_once_with('file:///static/css/missing.css')
+    @override_settings(STATIC_URL='/static/', STATIC_ROOT='/www/static')
+    @mock.patch('django_weasyprint.utils.open')
+    @mock.patch('django_weasyprint.utils.find', return_value=None)
+    @mock.patch('weasyprint.URLFetcher')
+    def test_static_file_not_found(self, mock_fetcher, mock_find, mock_open):
+        # request matches STATIC_URL, request handled,
+        # but staticfiles finder returns None
+        url = 'file:///static/css/missing.css'
+        DjangoUrlFetcher().fetch(url)
+        mock_find.assert_called_once_with('css/missing.css')
+        mock_open.assert_not_called()
+        # request was forwarded to default fetcher
+        mock_fetcher.assert_called_once_with('file:///static/css/missing.css')
