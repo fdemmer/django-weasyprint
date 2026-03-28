@@ -53,8 +53,10 @@ class DjangoUrlFetcher(URLFetcher):
                 if not settings.DEBUG and hasattr(staticfiles_storage, 'hashed_files'):
                     log.debug('Hashed static files storage detected')
                     relative_path = get_reversed_hashed_files()[relative_path]
+                log.debug('Cleaned path: %s', relative_path)
                 # find the absolute path using the static file finders
                 absolute_path = find(relative_path)
+                log.debug('Static file finder returned: %s', absolute_path)
                 if absolute_path:
                     log.debug('Loading static file: %s', absolute_path)
                     body = open(absolute_path, 'rb')  # noqa: PTH123
@@ -64,7 +66,7 @@ class DjangoUrlFetcher(URLFetcher):
                     )
         # Fall back to weasyprint default fetcher for http/s: and file: paths
         # that did not match MEDIA_URL or STATIC_URL.
-        log.debug('Forwarding to weasyprint.default_url_fetcher: %s', url)
+        log.debug('Forwarding to weasyprint.URLFetcher: %s', url)
         return super().fetch(url, headers)
 
 def django_url_fetcher(url, *args, **kwargs):
