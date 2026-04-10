@@ -6,7 +6,7 @@ gha-update:
     uvx gha-update
 
 test:
-    tox --parallel auto --recreate
+    uvx --with tox-uv tox --parallel auto
 
 clean:
     rm -rf build dist
