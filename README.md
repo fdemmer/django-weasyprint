@@ -46,28 +46,32 @@ from django.views.generic import DetailView
 
 from django_weasyprint import WeasyTemplateResponseMixin
 from django_weasyprint.views import WeasyTemplateResponse
-from django_weasyprint.utils import django_url_fetcher
-
+from django_weasyprint.utils import DjangoURLFetcher
 
 class MyDetailView(DetailView):
     # vanilla Django DetailView
     template_name = 'mymodel.html'
 
-def custom_url_fetcher(url, *args, **kwargs):
+class CustomURLFetcher(DjangoURLFetcher):
     # rewrite requests for CDN URLs to file path in STATIC_ROOT to use local file
-    cloud_storage_url = 'https://s3.amazonaws.com/django-weasyprint/static/'
-    if url.startswith(cloud_storage_url):
-        url = 'file://' + url.replace(cloud_storage_url, settings.STATIC_URL)
-    return django_url_fetcher(url, *args, **kwargs)
+    def fetch(self, url, headers=None):
+        cloud_storage_url = 'https://s3.amazonaws.com/django-weasyprint/static/'
+        if url.startswith(cloud_storage_url):
+            url = 'file://' + url.replace(cloud_storage_url, settings.STATIC_URL)
+        return super().fetch(url, headers)
 
 class CustomWeasyTemplateResponse(WeasyTemplateResponse):
-    # customized response class to pass a kwarg to URL fetcher
-    def get_url_fetcher(self):
+    # use custom URLFetcher in response class
+    url_fetcher_class = CustomURLFetcher
+
+    # customized response class to pass a kwarg to already custom URLFetcher
+    def get_url_fetcher(self, *args, **kwargs):
         # disable host and certificate check
         context = ssl.create_default_context()
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE
-        return functools.partial(custom_url_fetcher, ssl_context=context)
+        kwargs['ssl_context'] = context
+        return self.url_fetcher_class(*args, **kwargs)
 
 class PrintView(WeasyTemplateResponseMixin, MyDetailView):
     # output of MyDetailView rendered as PDF with hardcoded CSS
@@ -76,7 +80,7 @@ class PrintView(WeasyTemplateResponseMixin, MyDetailView):
     ]
     # show pdf in-line (default: True, show download dialog)
     pdf_attachment = False
-    # custom response class to configure url-fetcher
+    # custom response class with CustomURLFetcher and ssl_context
     response_class = CustomWeasyTemplateResponse
 
 class DownloadView(WeasyTemplateResponseMixin, MyDetailView):
@@ -102,13 +106,13 @@ def simple_function_view(request):
 from celery import shared_task
 from django.template.loader import render_to_string
 
-from django_weasyprint.utils import django_url_fetcher
+from django_weasyprint.utils import DjangoURLFetcher
 
 @shared_task
 def generate_pdf(filename='mymodel.pdf'):
     weasy_html = weasyprint.HTML(
         string=render_to_string('mymodel.html'),
-        url_fetcher=django_url_fetcher,
+        url_fetcher=DjangoURLFetcher(),
         base_url='file://',
     )
     weasy_html.write_pdf(filename)
