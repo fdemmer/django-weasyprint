@@ -22,8 +22,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - "3.8"
-        - "3.9"
         - "3.10"
         - "3.11"
         - "3.12"
@@ -31,7 +29,7 @@ jobs:
         - "3.14"
 
     env:
-      USING_COVERAGE: "3.11"
+      USING_COVERAGE: "3.14"
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

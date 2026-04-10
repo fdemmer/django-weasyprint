@@ -32,8 +32,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -42,10 +40,10 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "Django>=3.2",
-    "WeasyPrint>=59",
+    "WeasyPrint>=68",
 ]
 
 [project.urls]
@@ -70,6 +68,7 @@ skip_covered = false
 show_contexts = true
 
 [tool.ruff]
+# https://docs.astral.sh/ruff/formatter/
 line-length = 90
 exclude = ["data", "docs", "migrations", "node_modules", "requirements"]
 
@@ -77,7 +76,7 @@ exclude = ["data", "docs", "migrations", "node_modules", "requirements"]
 quote-style = "single"
 
 [tool.ruff.lint]
-# https://beta.ruff.rs/docs/rules/
+# https://docs.astral.sh/ruff/rules/
 select = [
     "F", "E", "W", "C4", "C90", "B", "I", "INT", "PD", "PTH",
     "D201", "D202", "D206", "D207", "D208", "D209", "D211", "D213",
