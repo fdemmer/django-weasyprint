@@ -53,9 +53,14 @@ Changelog = "https://github.com/fdemmer/django-weasyprint/blob/main/CHANGELOG.md
 Homepage = "https://github.com/fdemmer/django-weasyprint"
 Repository = "https://github.com/fdemmer/django-weasyprint"
 
+[tool.coverage.paths]
+source = [
+    "src",
+    "**/site-packages",
+]
+
 [tool.coverage.run]
 branch = true
-dynamic_context = "test_function"
 
 [tool.coverage.report]
 show_missing = true
