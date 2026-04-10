@@ -4,10 +4,12 @@ from django.conf import settings
 from django.template.response import TemplateResponse
 from django.views.generic.base import ContextMixin, TemplateResponseMixin, View
 
-from django_weasyprint.utils import django_url_fetcher
+from django_weasyprint.utils import DjangoURLFetcher
 
 
 class WeasyTemplateResponse(TemplateResponse):
+    url_fetcher_class = DjangoURLFetcher
+
     def __init__(
             self,
             request,
@@ -74,11 +76,11 @@ class WeasyTemplateResponse(TemplateResponse):
             self._request.build_absolute_uri('/')
         )
 
-    def get_url_fetcher(self):
+    def get_url_fetcher(self, *args, **kwargs):
         """
         Determine the URL fetcher to fetch CSS, images, fonts, etc. from.
         """
-        return django_url_fetcher
+        return self.url_fetcher_class(*args, **kwargs)
 
     def get_font_config(self):
         """
