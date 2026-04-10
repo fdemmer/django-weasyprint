@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-04-11
+
+- **Breaking**: Replace `django_url_fetcher` function with `DjangoURLFetcher` class
+  implementing [WeasyPrint 68's `URLFetcher` API][wp68] (#106, by @crosspolar)
+- Drop support for WeasyPrint < 68
+- Drop support for Python 3.8 and 3.9
+
+[wp68]: https://github.com/Kozea/WeasyPrint/releases/tag/v68.0
+
 ## [2.4.1] - 2025-04-10
 
 - Add Python 3.14, Django 5.2 & 6.0, and WeasyPrint 67-68 to test matrix (with test fix)
