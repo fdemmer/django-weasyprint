@@ -10,7 +10,7 @@ authors = [
     {name = "Florian Demmer", email = "fdemmer@gmail.com"},
 ]
 description = "Django WeasyPrint integration"
-readme = "README.rst"
+readme = "README.md"
 license = {text = "Apache-2.0"}
 keywords = [
     "Django",
