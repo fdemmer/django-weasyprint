@@ -2,6 +2,9 @@
 default:
     @just --list --unsorted
 
+gha-update:
+    uvx gha-update
+
 test:
     tox --parallel auto --recreate
 
