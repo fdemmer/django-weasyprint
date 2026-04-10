@@ -65,6 +65,13 @@ skip_covered = false
 show_contexts = true
 
 [tool.ruff]
+line-length = 90
+exclude = ["data", "docs", "migrations", "node_modules", "requirements"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint]
 # https://beta.ruff.rs/docs/rules/
 select = [
     "F", "E", "W", "C4", "C90", "B", "I", "INT", "PD", "PTH",
@@ -75,20 +82,17 @@ ignore = [
     "E265",
     "F403", "F405", "F722", "F821",
     "C408",
-    "PD901",
 ]
 fixable = ["I001"]
-target-version = "py38"
-line-length = 90
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 lines-after-imports = 2
 section-order = ["future", "standard-library", "third-party", "django", "first-party", "local-folder"]
 
-[tool.ruff.isort.sections]
+[tool.ruff.lint.isort.sections]
 "django" = ["django"]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 10
 
 [tool.setuptools]
