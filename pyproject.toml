@@ -25,6 +25,7 @@ classifiers = [
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.2",
     "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
@@ -78,7 +79,7 @@ quote-style = "single"
 [tool.ruff.lint]
 # https://docs.astral.sh/ruff/rules/
 select = [
-    "F", "E", "W", "C4", "C90", "B", "I", "INT", "PD", "PTH",
+    "F", "E", "W", "C4", "C90", "B", "I", "INT", "PD", "PTH", "UP",
     "D201", "D202", "D206", "D207", "D208", "D209", "D211", "D213",
     "D300", "D403", "D419",
 ]
