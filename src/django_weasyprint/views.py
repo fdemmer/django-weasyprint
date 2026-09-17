@@ -3,6 +3,7 @@ import weasyprint
 from django.conf import settings
 from django.template.response import TemplateResponse
 from django.views.generic.base import ContextMixin, TemplateResponseMixin, View
+from django.utils.http import content_disposition_header
 
 from django_weasyprint.utils import DjangoURLFetcher
 
@@ -61,9 +62,8 @@ class WeasyTemplateResponse(TemplateResponse):
         )
         super().__init__(request, template, **kwargs)
 
-        if filename:
-            display = 'attachment' if attachment else 'inline'
-            self['Content-Disposition'] = f'{display};filename="{filename}"'
+        if content_disposition := content_disposition_header(attachment, filename):
+            self['Content-Disposition'] = content_disposition
 
     def get_base_url(self):
         """
