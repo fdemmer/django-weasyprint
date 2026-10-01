@@ -27,7 +27,7 @@ class WeasyTemplateViewTestCase(SimpleTestCase):
         self.assertTrue(response.has_header('content-disposition'))
         self.assertEqual(
             response['content-disposition'],
-            'attachment;filename="le-foo.pdf"',
+            'attachment; filename="le-foo.pdf"',
         )
         self.assertEqual(response.content[:8], b'%PDF-1.6')
 
@@ -43,5 +43,41 @@ class WeasyTemplateViewTestCase(SimpleTestCase):
 
                 self.assertTrue(response.has_header('content-type'))
                 self.assertEqual(response['content-type'], 'application/pdf')
-                self.assertFalse(response.has_header('content-disposition'))
+                self.assertTrue(response.has_header('content-disposition'))
+                self.assertEqual(response['content-disposition'], 'attachment')
                 self.assertEqual(response.content[:4], b'%PDF')
+
+    def test_get_pdf_utf8(self):
+        response = self.client.get('/pdf/download/utf8/')
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(response.has_header('content-type'))
+        self.assertEqual(response['content-type'], 'application/pdf')
+        self.assertTrue(response.has_header('content-disposition'))
+        self.assertEqual(
+            response['content-disposition'],
+            "attachment; filename*=utf-8''%ED%95%9C%EA%B5%AD%EC%96%B4.pdf",
+        )
+        self.assertEqual(response.content[:4], b'%PDF')
+
+    def test_get_pdf_inline(self):
+        response = self.client.get('/pdf/inline/')
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(response.has_header('content-type'))
+        self.assertEqual(response['content-type'], 'application/pdf')
+        self.assertFalse(response.has_header('content-disposition'))
+        self.assertEqual(response.content[:4], b'%PDF')
+
+    def test_get_pdf_inline_filename(self):
+        response = self.client.get('/pdf/inline/filename/')
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(response.has_header('content-type'))
+        self.assertEqual(response['content-type'], 'application/pdf')
+        self.assertTrue(response.has_header('content-disposition'))
+        self.assertEqual(
+            response['content-disposition'],
+            'inline; filename="le-foo.pdf"',
+        )
+        self.assertEqual(response.content[:4], b'%PDF')

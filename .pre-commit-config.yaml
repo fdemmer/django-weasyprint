@@ -12,6 +12,7 @@ repos:
       - id: check-yaml
       - id: debug-statements
       - id: double-quote-string-fixer
+        exclude: ^src/django_weasyprint/compat\.py$
       - id: end-of-file-fixer
       - id: mixed-line-ending
         args: ["--fix=lf"]
@@ -28,3 +29,4 @@ repos:
     hooks:
       - id: pyupgrade
         args: ["--py310-plus"]
+        exclude: ^src/django_weasyprint/compat\.py$

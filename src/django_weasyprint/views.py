@@ -4,6 +4,7 @@ from django.conf import settings
 from django.template.response import TemplateResponse
 from django.views.generic.base import ContextMixin, TemplateResponseMixin, View
 
+from django_weasyprint.compat import content_disposition_header
 from django_weasyprint.utils import DjangoURLFetcher
 
 
@@ -42,8 +43,10 @@ class WeasyTemplateResponse(TemplateResponse):
         WeasyPrint specific arguments:
 
         :param filename: set `Content-Disposition` to use this filename
-        :param attachment: set `Content-Disposition` 'attachment';
-            A `filename` must be given to enable this even if set to `True`.
+            (RFC 6266; non-ASCII characters are supported)
+        :param attachment: set `Content-Disposition` to 'attachment', else 'inline'.
+            Without a `filename`, the header is only sent as a bare 'attachment'
+            if this is `True` and omitted if `False`.
             (default: `True`)
         :param stylesheets: list of additional stylesheets
         :param options: dictionary of options passed to WeasyPrint
@@ -61,9 +64,8 @@ class WeasyTemplateResponse(TemplateResponse):
         )
         super().__init__(request, template, **kwargs)
 
-        if filename:
-            display = 'attachment' if attachment else 'inline'
-            self['Content-Disposition'] = f'{display};filename="{filename}"'
+        if content_disposition := content_disposition_header(attachment, filename):
+            self['Content-Disposition'] = content_disposition
 
     def get_base_url(self):
         """

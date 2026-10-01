@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+- Fix `Content-Disposition` for non-ASCII `pdf_filename` by following RFC 6266 (#122, #123, by @rfricz)
+- Changed: the header now reads `attachment; filename="..."` (with a space), and
+  responses without a `pdf_filename` now send a plain `Content-Disposition: attachment`
+  unless `pdf_attachment = False`
+
 ## [2.5.0] - 2026-04-11
 
 - **Breaking**: Replace `django_url_fetcher` function with `DjangoURLFetcher` class

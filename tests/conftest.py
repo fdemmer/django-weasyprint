@@ -25,6 +25,19 @@ class PDFDownloadView(WeasyTemplateResponseMixin, BaseView):
     pdf_options = {'pdf_version': '1.6'}
 
 
+class PDFDownloadUTF8View(WeasyTemplateResponseMixin, BaseView):
+    pdf_filename = '한국어.pdf'
+
+
+class PDFInlineView(WeasyTemplateResponseMixin, BaseView):
+    pdf_attachment = False
+
+
+class PDFInlineFilenameView(WeasyTemplateResponseMixin, BaseView):
+    pdf_attachment = False
+    pdf_filename = 'le-foo.pdf'
+
+
 class PDFView(WeasyTemplateView):
     template_name = 'example.html'
 
@@ -39,6 +52,9 @@ urlpatterns = [
     path('pdf/', PDFView.as_view()),
     path('pdf/view/', pdf_view),
     path('pdf/download/', PDFDownloadView.as_view()),
+    path('pdf/download/utf8/', PDFDownloadUTF8View.as_view()),
+    path('pdf/inline/', PDFInlineView.as_view()),
+    path('pdf/inline/filename/', PDFInlineFilenameView.as_view()),
 ]
 
 
