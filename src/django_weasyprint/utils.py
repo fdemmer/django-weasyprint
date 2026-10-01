@@ -1,6 +1,6 @@
 import logging
 import mimetypes
-from functools import lru_cache
+from functools import cache
 from urllib.parse import urlparse
 
 from weasyprint.urls import URLFetcher, URLFetcherResponse
@@ -15,7 +15,7 @@ from django.urls import get_script_prefix
 log = logging.getLogger(__name__)
 
 
-@lru_cache(maxsize=None)
+@cache
 def get_reversed_hashed_files():
     return {v: k for k, v in staticfiles_storage.hashed_files.items()}
 
