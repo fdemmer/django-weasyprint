@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Add WeasyPrint 70 to the test matrix
 - Fix `Content-Disposition` for non-ASCII `pdf_filename` by following RFC 6266 (#122, #123, by @rfricz)
 - Changed: the header now reads `attachment; filename="..."` (with a space), and
   responses without a `pdf_filename` now send a plain `Content-Disposition: attachment`
