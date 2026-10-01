@@ -5,6 +5,9 @@ default:
 gha-update:
     uvx gha-update
 
+gha-check args="":
+    uvx zizmor {{args}} .
+
 test:
     uvx --with tox-uv tox --parallel auto
 
