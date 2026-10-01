@@ -76,5 +76,8 @@ class WeasyTemplateViewTestCase(SimpleTestCase):
         self.assertTrue(response.has_header('content-type'))
         self.assertEqual(response['content-type'], 'application/pdf')
         self.assertTrue(response.has_header('content-disposition'))
-        self.assertEqual(response['content-disposition'], 'inline; filename="le-foo.pdf"')
+        self.assertEqual(
+            response['content-disposition'],
+            'inline; filename="le-foo.pdf"',
+        )
         self.assertEqual(response.content[:4], b'%PDF')
